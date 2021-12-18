@@ -1,0 +1,15 @@
+{
+  "name": "nodedb",
+  "version": "1.0.0",
+  "description": "costam projekt node maria db ",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mariadb": "^2.5.5",
+    "nodemon": "^2.0.15"
+  }
+}
