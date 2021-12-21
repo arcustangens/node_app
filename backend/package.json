@@ -4,12 +4,12 @@
   "description": "costam projekt node maria db ",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mariadb": "^2.5.5",
-    "nodemon": "^2.0.15"
+    "express": "^4.17.2",
+    "mariadb": "^2.5.5"
   }
 }
