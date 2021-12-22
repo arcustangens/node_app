@@ -4,7 +4,6 @@ const res = require("express/lib/response")
 const app = express()
 
 const database = require("./database.js")
-const { compileETag } = require("express/lib/utils")
 
 let conn
 
@@ -59,8 +58,10 @@ app.get("/typ_wymiaru", async (req, res) => {
     .catch(err => console.log(err))
 })
 app.post("/typ_wymiaru", async (req, res) => {
-  console.log("TYP WYMIARU: ", req.body.typWymiaru)
-  res.send()
+  conn
+    .query("INSERT INTO typ_wymiaru value (?, ?)", [null, req.body.typWymiaru])
+    .then(res.send())
+    .catch(err => console.log(err))
 })
 
 const main = async () => {
