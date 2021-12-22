@@ -12,7 +12,7 @@ const App = () => {
 
   const fetchRecords = async () => {
     const { data } = await axios.get('/records')
-    return data
+    setRecords(data)
   }
 
   const appendRecord = (newRecord) => {
@@ -46,7 +46,7 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <RecordTable />
+          <RecordTable records={records} />
         </Grid>
       </Grid>
     </Container>

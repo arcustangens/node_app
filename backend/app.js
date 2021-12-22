@@ -32,11 +32,23 @@ app.post(
     { name: 'plik', maxCount: 1 },
     { name: 'plikThumbnail', maxCount: 1 },
   ]),
-  (req, res) => {
+  async (req, res) => {
     const { plik, plikThumbnail } = req.files
     console.log(req.body)
-    const { kontrahent, numer, typWymiaru, a, b, c, d, e, f, nazwa, material } =
-      req.body
+    const {
+      kontrahent,
+      numer,
+      typWymiaru,
+      a,
+      b,
+      c,
+      d,
+      e,
+      f,
+      nazwa,
+      material,
+      uwagi,
+    } = req.body
 
     console.log(plik[0].filename)
     console.log(plikThumbnail[0].filename)
@@ -51,12 +63,49 @@ app.post(
       e,
       f,
       nazwa,
-      material
+      material,
+      uwagi
     )
+
+    const xd = await conn.query(
+      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [
+        null,
+        kontrahent,
+        numer,
+        typWymiaru,
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+        nazwa,
+        material,
+        uwagi,
+        plik[0].filename,
+        plikThumbnail[0].filename,
+      ]
+    )
+    console.log(xd)
 
     res.sendStatus(200)
   }
 )
+app.get('/records', async (req, res) => {
+  try {
+    const data = await conn.query(
+      `SELECT r.id, k.kontrahent, r.numer, t.typ, r.a, r.b, r.c, r.d, r.e, r.f, r.nazwa, m.material, r.uwagi, r.plik, r.plik_thumbnail FROM records r
+      LEFT JOIN kontrahenci k ON r.id_kontrahenta = k.id
+      LEFT JOIN typ_wymiaru t ON r.id_typu_wymiaru = t.id
+      LEFT JOIN materialy m ON r.id_materialu = m.id;`
+    )
+    console.log(data)
+    res.send(data)
+  } catch (err) {
+    res.status(404).send(err)
+  }
+})
 
 app.get('/kontrahenci', async (req, res) => {
   try {

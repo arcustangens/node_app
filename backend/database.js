@@ -1,10 +1,10 @@
-const mariadb = require("mariadb")
+const mariadb = require('mariadb')
 
 async function establishConnection(
-  host = "localhost",
+  host = 'localhost',
   port = 3306,
-  user = "root",
-  password = "root"
+  user = 'root',
+  password = 'root'
 ) {
   let conn
 
@@ -17,20 +17,52 @@ async function establishConnection(
     })
 
     // Setup database and tables if they don't exist yet
-    await conn.query("create database if not exists demo;")
-    await conn.query("use demo;")
-    await conn.query(
-      "CREATE TABLE IF NOT EXISTS `records` ( `id` int(11) NOT NULL AUTO_INCREMENT, `id_kontrahenta` int DEFAULT NULL, `numer` varchar(255) DEFAULT NULL, `id_typu_wymiaru` int DEFAULT NULL, `a` int(11) DEFAULT NULL, `b` int(11) DEFAULT NULL, `c` int(11) DEFAULT NULL, `d` int(11) DEFAULT NULL, `e` int(11) DEFAULT NULL, `f` int(11) DEFAULT NULL, `nazwa` varchar(255) DEFAULT NULL, `id_materialu` varchar(255) DEFAULT NULL, `uwagi` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
-    )
-    await conn.query(
-      "CREATE TABLE IF NOT EXISTS `kontrahenci` ( `id` int(11) NOT NULL AUTO_INCREMENT, `kontrahent` varchar(255) DEFAULT NULL, `akronim` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
-    )
-    await conn.query(
-      "CREATE TABLE IF NOT EXISTS `materialy` ( `id` int(11) NOT NULL AUTO_INCREMENT, `material` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
-    )
-    await conn.query(
-      "CREATE TABLE IF NOT EXISTS `typ_wymiaru` ( `id` int(11) NOT NULL AUTO_INCREMENT, `typ` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
-    )
+    // await conn.query('drop database if exists demo;')
+    await conn.query('create database if not exists demo;')
+    await conn.query('use demo;')
+    // await conn.query(`CREATE TABLE IF NOT EXISTS \`kontrahenci\` (
+    //   \`id\` INT NOT NULL AUTO_INCREMENT,
+    //   \`kontrahent\` varchar(255) NOT NULL,
+    //   \`akronim\` varchar(255) NOT NULL,
+    //   PRIMARY KEY (\`id\`)
+    // );`)
+    // await conn.query(`CREATE TABLE IF NOT EXISTS \`materialy\` (
+    //   \`id\` INT NOT NULL AUTO_INCREMENT,
+    //   \`material\` varchar(255) NOT NULL,
+    //   PRIMARY KEY (\`id\`)
+    // );`)
+    // await conn.query(`CREATE TABLE IF NOT EXISTS \`typ_wymiaru\` (
+    //   \`id\` INT NOT NULL AUTO_INCREMENT,
+    //   \`typ\` varchar(255) NOT NULL,
+    //   PRIMARY KEY (\`id\`)
+    // );`)
+    // await conn.query(`CREATE TABLE IF NOT EXISTS \`records\` (
+    //   \`id\` INT NOT NULL AUTO_INCREMENT,
+    //   \`id_kontrahenta\` INT NOT NULL,
+    //   \`numer\` varchar(255) NOT NULL,
+    //   \`id_typu_wymiaru\` INT NOT NULL,
+    //   \`a\` FLOAT NOT NULL,
+    //   \`b\` FLOAT NOT NULL,
+    //   \`c\` FLOAT NOT NULL,
+    //   \`d\` FLOAT NOT NULL,
+    //   \`e\` FLOAT NOT NULL,
+    //   \`f\` FLOAT NOT NULL,
+    //   \`nazwa\` varchar(255) NOT NULL,
+    //   \`id_materialu\` INT NOT NULL,
+    //   \`uwagi\` VARCHAR(255) NOT NULL,
+    //   \`plik\` varchar(255) NOT NULL,
+    //   \`plik_thumbnail\` varchar(255) NOT NULL,
+    //   PRIMARY KEY (\`id\`)
+    // );`)
+    // await conn.query(
+    //   `ALTER TABLE  \`records\` ADD CONSTRAINT \`records_fk0\` FOREIGN KEY (\`id_kontrahenta\`) REFERENCES \`kontrahenci\`(\`id\`) ;`
+    // )
+    // await conn.query(
+    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk1\` FOREIGN KEY (\`id_typu_wymiaru\`) REFERENCES \`typ_wymiaru\`(\`id\`);`
+    // )
+    // await conn.query(
+    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk2\` FOREIGN KEY (\`id_materialu\`) REFERENCES \`materialy\`(\`id\`);`
+    // )
 
     return conn
   } catch (err) {

@@ -50,6 +50,7 @@ const CreateRecordForm = ({
       appendRecord(data)
       handleDialog()
     } catch (e) {
+      console.log(e)
       setError(e.message)
     }
   }
@@ -138,6 +139,13 @@ const CreateRecordForm = ({
         name={'material'}
         label={'Materiał'}
         options={materialy}
+      />
+      <RecordTextField
+        errors={errors}
+        control={control}
+        name={'uwagi'}
+        label={'Uwagi'}
+        multiline
       />
       <Grid container spacing={1}>
         <Grid item xs={6}>

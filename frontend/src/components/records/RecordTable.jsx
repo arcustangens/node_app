@@ -27,7 +27,7 @@ import { DataGrid } from '@mui/x-data-grid'
 const columns = [
   { field: 'kontrahent', headerName: 'Kontrahent', width: 150 },
   { field: 'numer', headerName: 'Numer seryjny', width: 150 },
-  { field: 'typWymiaru', headerName: 'Typ wymiarów', width: 170 },
+  { field: 'typ', headerName: 'Typ wymiarów', width: 170 },
   { field: 'a', headerName: 'A', sortable: false, width: 80 },
   { field: 'b', headerName: 'B', sortable: false, width: 80 },
   { field: 'c', headerName: 'C', sortable: false, width: 80 },
@@ -35,38 +35,15 @@ const columns = [
   { field: 'e', headerName: 'E', sortable: false, width: 80 },
   { field: 'nazwa', headerName: 'Nazwa', width: 200 },
   { field: 'material', headerName: 'Materiał', width: 150 },
+  { field: 'uwagi', headerName: 'Uwagi', width: 200 },
 ]
 
-const rows = [
-  {
-    id: 1000,
-    kontrahent: 'KLINGSPOR',
-    numer: 'KL001',
-    typWymiaru: null,
-    a: 120,
-    b: 260,
-    c: 15,
-    d: null,
-    e: null,
-    nazwa: '5142121;514209',
-    material: 'GD2 350 g/m2',
-  },
-  {
-    id: 2,
-    kontrahent: 'KLINGSPOR',
-    numer: 'KL001',
-    typWymiaru: null,
-    a: 120,
-    b: 260,
-    c: 15,
-    d: 15,
-    e: 15,
-    nazwa: '5142121;514209',
-    material: 'GD2 350 g/m2',
-  },
-]
+const RecordTable = ({ records }) => {
+  console.log(records)
+  if (!records) {
+    return <span />
+  }
 
-const RecordTable = () => {
   return (
     <DataGrid
       autoHeight
@@ -77,12 +54,12 @@ const RecordTable = () => {
       // disableColumnMenu
       // disableColumnFilter
       disableSelectionOnClick
-      rows={rows}
+      rows={records}
       columns={columns}
       pageSize={12}
       rowsPerPageOptions={[12]}
-      onRowClick={() => {
-        window.open('https://www.google.com/', '_blank')
+      onRowClick={({ row }) => {
+        window.open(`localhost:3000/uploads/${row.plik}`, '_blank')
       }}
     />
   )

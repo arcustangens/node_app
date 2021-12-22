@@ -2,7 +2,7 @@ import React from 'react'
 import { Input, FormControl, InputLabel, FormHelperText } from '@mui/material'
 import { Controller } from 'react-hook-form'
 
-const RecordTextField = ({ errors, control, name, label }) => {
+const RecordTextField = ({ errors, control, name, label, multiline }) => {
   return (
     <Controller
       render={({ field }) => (
@@ -13,7 +13,12 @@ const RecordTextField = ({ errors, control, name, label }) => {
           fullWidth
         >
           <InputLabel htmlFor={name}>{label}</InputLabel>
-          <Input id={name} aria-describedby={`${name}-error`} />
+          <Input
+            id={name}
+            aria-describedby={`${name}-error`}
+            multiline={multiline}
+            maxRows={4}
+          />
           <FormHelperText id={`${name}-error`}>
             {errors[name]?.message}
           </FormHelperText>
