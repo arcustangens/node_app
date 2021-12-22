@@ -84,7 +84,6 @@ const RecordTable = () => {
       onRowClick={() => {
         window.open('https://www.google.com/', '_blank')
       }}
-      onStateChange={(e) => console.log(e)}
     />
   )
 }

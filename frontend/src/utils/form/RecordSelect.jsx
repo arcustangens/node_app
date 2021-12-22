@@ -16,7 +16,9 @@ const RecordSelect = ({ errors, control, name, label, options }) => {
           <InputLabel htmlFor={name}>{label}</InputLabel>
           <Select {...field} aria-describedby={`${name}-error`}>
             {options.map(({ value, label }) => (
-              <MenuItem value={value}>{label}</MenuItem>
+              <MenuItem key={value} value={value}>
+                {label}
+              </MenuItem>
             ))}
           </Select>
           <FormHelperText id={`${name}-error`}>
@@ -26,7 +28,7 @@ const RecordSelect = ({ errors, control, name, label, options }) => {
       )}
       control={control}
       name={name}
-      defaultValue={'Kontrahent 1'}
+      defaultValue={options[0].value}
     />
   )
 }
