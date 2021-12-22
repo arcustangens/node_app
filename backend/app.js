@@ -10,6 +10,8 @@ let conn
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 
+function parseDict(dictionary) {}
+
 app.post("/form", (req, res) => {
   console.log(req.body)
   res.send()
@@ -17,8 +19,14 @@ app.post("/form", (req, res) => {
 
 app.get("/kontrahenci", async (req, res) => {
   conn
-    .query("SELECT * FROM kontrahenci;")
+    .query("SELECT id, kontrahent FROM kontrahenci;")
     .then(response => {
+      response.value = response.id
+      delete response.id
+
+      response.label = response.kontrahent
+      delete response.kontrahent
+
       res.send(response)
     })
     .catch(err => console.log(err))
@@ -38,6 +46,12 @@ app.get("/materialy", async (req, res) => {
   conn
     .query("SELECT * FROM materialy;")
     .then(response => {
+      response.value = response.id
+      delete response.id
+
+      response.label = response.material
+      delete response.material
+
       res.send(response)
     })
     .catch(err => console.log(err))
@@ -53,6 +67,12 @@ app.get("/typ_wymiaru", async (req, res) => {
   conn
     .query("SELECT * FROM typ_wymiaru;")
     .then(response => {
+      response.value = response.id
+      delete response.id
+
+      response.label = response.typ
+      delete response.typ
+
       res.send(response)
     })
     .catch(err => console.log(err))
