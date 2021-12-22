@@ -12,6 +12,7 @@ import RecordFileField from '../../utils/form/RecordFileField'
 const CreateRecordForm = ({
   handleDialog,
   kontrahenci,
+  typyWymiaru,
   materialy,
   appendRecord,
 }) => {
@@ -73,7 +74,7 @@ const CreateRecordForm = ({
         control={control}
         name={'typWymiaru'}
         label={'Typ wymiaru'}
-        options={kontrahenci}
+        options={typyWymiaru}
       />
       <Grid container spacing={1}>
         <Grid item xs={2}>

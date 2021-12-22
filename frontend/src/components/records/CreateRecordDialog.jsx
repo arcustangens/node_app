@@ -12,6 +12,7 @@ import CreateRecordForm from './CreateRecordForm'
 const CreateRecordDialog = ({ appendRecord }) => {
   const [open, setOpen] = useState(false)
   const [kontrahenci, setKontrahenci] = useState([])
+  const [typyWymiaru, setTypyWymiaru] = useState([])
   const [materialy, setMaterialy] = useState([])
 
   const handleClickOpen = () => {
@@ -27,6 +28,11 @@ const CreateRecordDialog = ({ appendRecord }) => {
     setKontrahenci(data)
   }
 
+  const fetchTypyWymiaru = async () => {
+    const { data } = await axios.get('/typy_wymiaru')
+    setTypyWymiaru(data)
+  }
+
   const fetchMaterialy = async () => {
     const { data } = await axios.get('/materialy')
     setMaterialy(data)
@@ -34,8 +40,9 @@ const CreateRecordDialog = ({ appendRecord }) => {
 
   useEffect(() => {
     fetchKontrahenci()
+    fetchTypyWymiaru()
     fetchMaterialy()
-  }, [])
+  }, [open])
 
   return (
     <div>
@@ -48,6 +55,7 @@ const CreateRecordDialog = ({ appendRecord }) => {
           <CreateRecordForm
             handleDialog={handleClose}
             kontrahenci={kontrahenci}
+            typyWymiaru={typyWymiaru}
             materialy={materialy}
             appendRecord={appendRecord}
           />
