@@ -16,18 +16,13 @@ app.post("/form", (req, res) => {
 })
 
 app.get("/kontrahenci", async (req, res) => {
-  conn
-    .query("SELECT id, kontrahent FROM kontrahenci;")
-    .then(response => {
-      response.value = response.id
-      delete response.id
-
-      response.label = response.kontrahent
-      delete response.kontrahent
-
-      res.send(response)
-    })
-    .catch(err => console.log(err))
+  try {
+    response = await conn.query("SELECT id, kontrahent FROM kontrahenci;")
+    output = { value: response.id, label: response.kontrahent }
+    res.send(output)
+  } catch (err) {
+    console.log(err)
+  }
 })
 app.post("/kontrahenci", async (req, res) => {
   conn
@@ -41,18 +36,13 @@ app.post("/kontrahenci", async (req, res) => {
 })
 
 app.get("/materialy", async (req, res) => {
-  conn
-    .query("SELECT * FROM materialy;")
-    .then(response => {
-      response.value = response.id
-      delete response.id
-
-      response.label = response.material
-      delete response.material
-
-      res.send(response)
-    })
-    .catch(err => console.log(err))
+  try {
+    response = await conn.query("SELECT * FROM materialy;")
+    output = { value: response.id, label: response.material }
+    res.send(output)
+  } catch (err) {
+    console.log(err)
+  }
 })
 app.post("/materialy", async (req, res) => {
   conn
@@ -62,18 +52,13 @@ app.post("/materialy", async (req, res) => {
 })
 
 app.get("/typ_wymiaru", async (req, res) => {
-  conn
-    .query("SELECT * FROM typ_wymiaru;")
-    .then(response => {
-      response.value = response.id
-      delete response.id
-
-      response.label = response.typ
-      delete response.typ
-
-      res.send(response)
-    })
-    .catch(err => console.log(err))
+  try {
+    response = await conn.query("SELECT * FROM typ_wymiaru;")
+    output = { value: response.id, label: response.typ }
+    res.send(output)
+  } catch (err) {
+    console.log(err)
+  }
 })
 app.post("/typ_wymiaru", async (req, res) => {
   conn
