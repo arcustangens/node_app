@@ -10,8 +10,6 @@ let conn
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 
-function parseDict(dictionary) {}
-
 app.post("/form", (req, res) => {
   console.log(req.body)
   res.send()
