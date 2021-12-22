@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const res = require('express/lib/response')
+const multer = require('multer')
+
 const app = express()
 
 const database = require('./database.js')
@@ -9,11 +11,51 @@ let conn
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(express.static('public'))
 
-app.post('/form', (req, res) => {
-  console.log(req.body)
-  res.send()
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/')
+  },
+  filename: (req, { fieldname, originalname }, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    const extension = originalname.substring(originalname.length - 4)
+    cb(null, `${fieldname}-${uniqueSuffix}${extension}`)
+  },
 })
+const upload = multer({ storage })
+
+app.post(
+  '/form',
+  upload.fields([
+    { name: 'plik', maxCount: 1 },
+    { name: 'plikThumbnail', maxCount: 1 },
+  ]),
+  (req, res) => {
+    const { plik, plikThumbnail } = req.files
+    console.log(req.body)
+    const { kontrahent, numer, typWymiaru, a, b, c, d, e, f, nazwa, material } =
+      req.body
+
+    console.log(plik[0].filename)
+    console.log(plikThumbnail[0].filename)
+    console.log(
+      kontrahent,
+      numer,
+      typWymiaru,
+      a,
+      b,
+      c,
+      d,
+      e,
+      f,
+      nazwa,
+      material
+    )
+
+    res.sendStatus(200)
+  }
+)
 
 app.get('/kontrahenci', async (req, res) => {
   try {
