@@ -1,5 +1,6 @@
-import { Container, TextField, Button, Grid } from '@mui/material'
+import { Container, TextField, Grid } from '@mui/material'
 import RecordTable from './RecordTable'
+import CreateRecordDialog from './CreateRecordDialog'
 
 function App() {
   return (
@@ -9,14 +10,11 @@ function App() {
           <TextField id='time' type='text' />
         </Grid>
         <Grid item xs={6}>
-          <Button onClick={() => alert('Create record')} variant='contained'>
-            Contained
-          </Button>
+          <CreateRecordDialog />
         </Grid>
       </Grid>
 
       <RecordTable />
-      {/* <RecordDialog /> */}
     </Container>
   )
 }
