@@ -17,7 +17,7 @@ app.post('/form', (req, res) => {
 
 app.get('/kontrahenci', async (req, res) => {
   try {
-    const data = await conn.query('SELECT * FROM materialy;')
+    const data = await conn.query('SELECT * FROM kontrahenci;')
     const parsedData = data.map(({ id, kontrahent }) => ({
       value: id,
       label: kontrahent,
@@ -28,14 +28,19 @@ app.get('/kontrahenci', async (req, res) => {
   }
 })
 app.post('/kontrahenci', async (req, res) => {
-  conn
-    .query('INSERT INTO kontrahenci value (?, ?, ?)', [
+  try {
+    const { kontrahent, akronim } = req.body
+
+    await conn.query('INSERT INTO kontrahenci value (?, ?, ?)', [
       null,
-      req.body.kontrahent,
-      'TEST',
+      kontrahent,
+      akronim,
     ])
-    .then(res.send())
-    .catch((err) => console.log(err))
+
+    res.sendStatus(200)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 app.get('/materialy', async (req, res) => {
@@ -51,10 +56,15 @@ app.get('/materialy', async (req, res) => {
   }
 })
 app.post('/materialy', async (req, res) => {
-  conn
-    .query('INSERT INTO materialy value (?, ?)', [null, req.body.material])
-    .then(res.send())
-    .catch((err) => console.log(err))
+  try {
+    const { material } = req.body
+
+    await conn.query('INSERT INTO materialy value (?, ?)', [null, material])
+
+    res.sendStatus(200)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 app.get('/typ_wymiaru', async (req, res) => {
@@ -70,10 +80,15 @@ app.get('/typ_wymiaru', async (req, res) => {
   }
 })
 app.post('/typ_wymiaru', async (req, res) => {
-  conn
-    .query('INSERT INTO typ_wymiaru value (?, ?)', [null, req.body.typWymiaru])
-    .then(res.send())
-    .catch((err) => console.log(err))
+  try {
+    const { typWymiaru } = req.body
+
+    await conn.query('INSERT INTO typ_wymiaru value (?, ?)', [null, typWymiaru])
+
+    res.sendStatus(200)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 const main = async () => {

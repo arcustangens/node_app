@@ -29,7 +29,7 @@ const CreateRecordDialog = ({ appendRecord }) => {
   }
 
   const fetchTypyWymiaru = async () => {
-    const { data } = await axios.get('/typy_wymiaru')
+    const { data } = await axios.get('/typ_wymiaru')
     setTypyWymiaru(data)
   }
 
