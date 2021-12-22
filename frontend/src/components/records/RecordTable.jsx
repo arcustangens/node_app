@@ -25,26 +25,29 @@ import { DataGrid } from '@mui/x-data-grid'
 //   ];
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 50 },
-  { field: 'kontrahent', headerName: 'Kontrahent', width: 120 },
-  { field: 'numer', headerName: 'Numer seryjny', width: 50 },
-  { field: 'typWymiaru', headerName: 'Rodzaj wymiarów', width: 50 },
-  { field: 'x', headerName: 'x', width: 50 },
-  { field: 'y', headerName: 'y', width: 50 },
-  { field: 'z', headerName: 'z', width: 50 },
-  { field: 'nazwa', headerName: 'Nazwa', width: 120 },
-  { field: 'material', headerName: 'Materiał', width: 120 },
+  { field: 'kontrahent', headerName: 'Kontrahent', width: 150 },
+  { field: 'numer', headerName: 'Numer seryjny', width: 150 },
+  { field: 'typWymiaru', headerName: 'Typ wymiarów', width: 170 },
+  { field: 'a', headerName: 'A', sortable: false, width: 80 },
+  { field: 'b', headerName: 'B', sortable: false, width: 80 },
+  { field: 'c', headerName: 'C', sortable: false, width: 80 },
+  { field: 'd', headerName: 'D', sortable: false, width: 80 },
+  { field: 'e', headerName: 'E', sortable: false, width: 80 },
+  { field: 'nazwa', headerName: 'Nazwa', width: 200 },
+  { field: 'material', headerName: 'Materiał', width: 150 },
 ]
 
 const rows = [
   {
-    id: 1,
+    id: 1000,
     kontrahent: 'KLINGSPOR',
     numer: 'KL001',
     typWymiaru: null,
-    x: 120,
-    y: 260,
-    z: 15,
+    a: 120,
+    b: 260,
+    c: 15,
+    d: null,
+    e: null,
     nazwa: '5142121;514209',
     material: 'GD2 350 g/m2',
   },
@@ -53,9 +56,11 @@ const rows = [
     kontrahent: 'KLINGSPOR',
     numer: 'KL001',
     typWymiaru: null,
-    x: 120,
-    y: 260,
-    z: 15,
+    a: 120,
+    b: 260,
+    c: 15,
+    d: 15,
+    e: 15,
     nazwa: '5142121;514209',
     material: 'GD2 350 g/m2',
   },
@@ -63,14 +68,24 @@ const rows = [
 
 const RecordTable = () => {
   return (
-    <div style={{ height: '80vh', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={12}
-        rowsPerPageOptions={[12]}
-      />
-    </div>
+    <DataGrid
+      autoHeight
+      autoPageSize
+      density='compact'
+      disableDensitySelector
+      disableColumnSelector
+      // disableColumnMenu
+      // disableColumnFilter
+      disableSelectionOnClick
+      rows={rows}
+      columns={columns}
+      pageSize={12}
+      rowsPerPageOptions={[12]}
+      onRowClick={() => {
+        window.open('https://www.google.com/', '_blank')
+      }}
+      onStateChange={(e) => console.log(e)}
+    />
   )
 }
 

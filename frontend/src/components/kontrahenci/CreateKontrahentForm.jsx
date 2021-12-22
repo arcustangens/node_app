@@ -34,7 +34,12 @@ const CreateKontrahentForm = ({ handleDialog }) => {
         name={'kontrahent'}
         label={'Kontrahent'}
       />
-
+      <RecordTextField
+        errors={errors}
+        control={control}
+        name={'akronim'}
+        label={'Akronim'}
+      />
       {error && <Alert severity='error'>{error}</Alert>}
       <Button
         fullWidth

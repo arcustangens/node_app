@@ -7,9 +7,9 @@ const RecordNumberField = ({ errors, control, name, label }) => {
     <Controller
       render={({ field }) => (
         <FormControl {...field} error={!!errors[name]} variant='standard'>
-          <InputLabel htmlFor={`${name}-error`}>{label}</InputLabel>
-          <Input type='number' aria-describedby={`${name}-error-text`} />
-          <FormHelperText id={`${name}-error-text`}>
+          <InputLabel htmlFor={name}>{label}</InputLabel>
+          <Input id={name} type='number' aria-describedby={`${name}-error`} />
+          <FormHelperText id={`${name}-error`}>
             {errors[name]?.message}
           </FormHelperText>
         </FormControl>

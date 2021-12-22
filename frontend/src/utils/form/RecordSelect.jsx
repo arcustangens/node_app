@@ -13,13 +13,13 @@ const RecordSelect = ({ errors, control, name, label, options }) => {
     <Controller
       render={({ field }) => (
         <FormControl error={!!errors[name]} variant='standard' fullWidth>
-          <InputLabel htmlFor={`${name}-error`}>{label}</InputLabel>
-          <Select {...field} aria-describedby={`${name}-error-text`}>
+          <InputLabel htmlFor={name}>{label}</InputLabel>
+          <Select {...field} aria-describedby={`${name}-error`}>
             <MenuItem value={'Kontrahent 1'}>Kontrahent 1</MenuItem>
             <MenuItem value={'Kontrahent 2'}>Kontrahent 2</MenuItem>
             <MenuItem value={'Kontrahent 3'}>Kontrahent 3</MenuItem>
           </Select>
-          <FormHelperText id={`${name}-error-text`}>
+          <FormHelperText id={`${name}-error`}>
             {errors[name]?.message}
           </FormHelperText>
         </FormControl>

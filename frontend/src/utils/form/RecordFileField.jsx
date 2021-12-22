@@ -1,27 +1,34 @@
 import React from 'react'
-import { Input, FormControl, InputLabel, FormHelperText } from '@mui/material'
-import { Controller } from 'react-hook-form'
+import { Input, InputLabel, FormHelperText } from '@mui/material'
 
-const RecordFileField = ({ errors, control, name, label }) => {
+const RecordFileField = ({ register, errors, name, label }) => {
   return (
-    <Controller
-      render={({ field }) => (
-        <FormControl
-          {...field}
-          error={!!errors[name]}
-          variant='standard'
-          fullWidth
-        >
-          <InputLabel htmlFor='component-error'>{label}</InputLabel>
-          <Input type='file' aria-describedby='component-error-text' />
-          <FormHelperText id='component-error-text'>
-            {errors[name]?.message}
-          </FormHelperText>
-        </FormControl>
-      )}
-      control={control}
-      name={name}
-    />
+    <>
+      <InputLabel
+        htmlFor={name}
+        sx={{
+          color: !!errors[name] && 'error.main',
+        }}
+      >
+        {label}
+      </InputLabel>
+      <Input
+        {...register(name)}
+        type='file'
+        aria-describedby={`${name}-error`}
+        sx={{
+          color: !!errors[name] && 'error.main',
+        }}
+      />
+      <FormHelperText
+        id={`${name}-error`}
+        sx={{
+          color: !!errors[name] && 'error.main',
+        }}
+      >
+        {errors[name]?.message}
+      </FormHelperText>
+    </>
   )
 }
 

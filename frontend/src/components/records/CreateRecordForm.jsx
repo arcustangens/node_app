@@ -9,31 +9,44 @@ import RecordTextField from '../../utils/form/RecordTextField'
 import RecordNumberField from '../../utils/form/RecordNumberField'
 import RecordFileField from '../../utils/form/RecordFileField'
 
-const CreateRecordForm = ({ handleDialog, kontrahenci, materialy }) => {
+const CreateRecordForm = ({
+  handleDialog,
+  kontrahenci,
+  materialy,
+  appendRecord,
+}) => {
   const [error, setError] = useState()
+
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { isSubmitting, errors },
+  } = useForm({
+    resolver: yupResolver(RecordSchema),
+  })
 
   const buildRecordBody = (data) => {
     const recordPostFormData = new FormData()
     for (const key in data) {
       recordPostFormData.append(key, data[key])
     }
-  }
 
-  const {
-    handleSubmit,
-    control,
-    formState: { isSubmitting, errors },
-  } = useForm({
-    resolver: yupResolver(RecordSchema),
-  })
+    return recordPostFormData
+  }
 
   const onSubmit = async (data) => {
     console.log(data)
     setError(null)
-    const postBody = buildRecordBody(data)
+
+    const { plik, plikThumbnail, ...dataWithoutImages } = data
+    const postBody = buildRecordBody(dataWithoutImages)
+    postBody.append('plik', plik[0])
+    postBody.append('plikThumbnail', plikThumbnail[0])
 
     try {
-      await axios.post('/form', postBody)
+      const { data } = await axios.post('/form', postBody)
+      appendRecord(data)
       handleDialog()
     } catch (e) {
       setError(e.message)
@@ -125,12 +138,25 @@ const CreateRecordForm = ({ handleDialog, kontrahenci, materialy }) => {
         label={'Materiał'}
         options={materialy}
       />
-      <RecordFileField
-        errors={errors}
-        control={control}
-        name={'plik'}
-        label={'Plik'}
-      />
+      <Grid container spacing={1}>
+        <Grid item xs={6}>
+          <RecordFileField
+            register={register}
+            errors={errors}
+            name='plik'
+            label='Plik'
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <RecordFileField
+            register={register}
+            errors={errors}
+            name='plikThumbnail'
+            label='Thumbnail'
+          />
+        </Grid>
+      </Grid>
+
       {error && <Alert severity='error'>{error}</Alert>}
       <Button
         fullWidth

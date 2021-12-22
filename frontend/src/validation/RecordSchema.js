@@ -11,13 +11,22 @@ export const RecordSchema = yup.object().shape({
   e: yup.number(),
   nazwa: yup.string().required('Wymagane'),
   material: yup.string().required('Wymagane'),
-  // plik: yup
-  //   .mixed()
-  //   .test('fileRequired', 'Wymagane', (value) => {
-  //     return value.length > 0
-  //   })
-  //   .test('fileType', 'Błędne rozszerzenie pliku', (value) => {
-  //     if (!value.length) return true
-  //     return /^image\/.+$/.test(value[0].type)
-  //   }),
+  plik: yup
+    .mixed()
+    .test('fileRequired', 'Wymagane', (value) => {
+      return value.length > 0
+    })
+    .test('fileType', 'Błędne rozszerzenie pliku', (value) => {
+      if (!value.length) return true
+      return /^image\/.+$/.test(value[0].type)
+    }),
+  plikThumbnail: yup
+    .mixed()
+    .test('fileRequired', 'Wymagane', (value) => {
+      return value.length > 0
+    })
+    .test('fileType', 'Błędne rozszerzenie pliku', (value) => {
+      if (!value.length) return true
+      return /^image\/.+$/.test(value[0].type)
+    }),
 })

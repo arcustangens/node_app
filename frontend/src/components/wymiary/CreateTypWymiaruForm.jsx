@@ -4,7 +4,7 @@ import { Alert, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
-import { MaterialSchema } from '../../validation/MaterialSchema'
+import { TypWymiaruSchema } from '../../validation/TypWymiaruSchema'
 
 const CreateTypWymiaruForm = ({ handleDialog }) => {
   const [error, setError] = useState()
@@ -14,7 +14,7 @@ const CreateTypWymiaruForm = ({ handleDialog }) => {
     control,
     formState: { isSubmitting, errors },
   } = useForm({
-    resolver: yupResolver(MaterialSchema),
+    resolver: yupResolver(TypWymiaruSchema),
   })
 
   const onSubmit = async (data) => {
