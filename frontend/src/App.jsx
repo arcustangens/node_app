@@ -3,6 +3,7 @@ import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateKontrahentDialog from './components/kontrahenci/CreateKontrahentDialog'
 import CreateMaterialDialog from './components/materialy/CreateMaterialDialog'
+import CreateTypWymiaruDialog from './components/wymiary/CreateTypWymiaruDialog'
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
           </Grid>
           <Grid item>
             <CreateMaterialDialog />
+          </Grid>
+          <Grid item>
+            <CreateTypWymiaruDialog />
           </Grid>
         </Grid>
         <Grid item>

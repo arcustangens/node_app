@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
 import { KontrahentSchema } from '../../validation/KontrahentSchema'
 
-const CreateKonrtrahentForm = ({ handleDialog }) => {
+const CreateKontrahentForm = ({ handleDialog }) => {
   const [error, setError] = useState()
 
   const {
@@ -49,4 +49,4 @@ const CreateKonrtrahentForm = ({ handleDialog }) => {
   )
 }
 
-export default CreateKonrtrahentForm
+export default CreateKontrahentForm
