@@ -15,9 +15,9 @@ const RecordSelect = ({ errors, control, name, label, options }) => {
         <FormControl error={!!errors[name]} variant='standard' fullWidth>
           <InputLabel htmlFor={name}>{label}</InputLabel>
           <Select {...field} aria-describedby={`${name}-error`}>
-            <MenuItem value={'Kontrahent 1'}>Kontrahent 1</MenuItem>
-            <MenuItem value={'Kontrahent 2'}>Kontrahent 2</MenuItem>
-            <MenuItem value={'Kontrahent 3'}>Kontrahent 3</MenuItem>
+            {options.map(({ value, label }) => (
+              <MenuItem value={value}>{label}</MenuItem>
+            ))}
           </Select>
           <FormHelperText id={`${name}-error`}>
             {errors[name]?.message}
