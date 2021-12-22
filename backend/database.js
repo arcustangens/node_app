@@ -28,6 +28,9 @@ async function establishConnection(
     await conn.query(
       "CREATE TABLE IF NOT EXISTS `materialy` ( `id` int(11) NOT NULL AUTO_INCREMENT, `material` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
     )
+    await conn.query(
+      "CREATE TABLE IF NOT EXISTS `typ_wymiaru` ( `id` int(11) NOT NULL AUTO_INCREMENT, `typ` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) )"
+    )
 
     return conn
   } catch (err) {
