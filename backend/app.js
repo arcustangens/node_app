@@ -11,7 +11,6 @@ let conn
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(express.static('public'))
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,6 +23,8 @@ const storage = multer.diskStorage({
   },
 })
 const upload = multer({ storage })
+
+app.use('/uploads', express.static('uploads'))
 
 app.post(
   '/form',
