@@ -1,20 +1,33 @@
-import { Container, TextField, Grid } from '@mui/material'
-import RecordTable from './RecordTable'
-import CreateRecordDialog from './CreateRecordDialog'
+import { Container, Grid } from '@mui/material'
+import RecordTable from './components/records/RecordTable'
+import CreateRecordDialog from './components/records/CreateRecordDialog'
+import CreateKontrahentDialog from './components/kontrahenci/CreateKontrahentDialog'
+import CreateMaterialDialog from './components/materialy/CreateMaterialDialog'
 
 function App() {
   return (
-    <Container maxWidth='xl'>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField id='time' type='text' />
+    <Container
+      maxWidth='xl'
+      sx={{
+        padding: 2,
+      }}
+    >
+      <Grid container spacing={2} direction='column'>
+        <Grid item container direction='row' spacing={3}>
+          <Grid item>
+            <CreateRecordDialog />
+          </Grid>
+          <Grid item>
+            <CreateKontrahentDialog />
+          </Grid>
+          <Grid item>
+            <CreateMaterialDialog />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <CreateRecordDialog />
+        <Grid item>
+          <RecordTable />
         </Grid>
       </Grid>
-
-      <RecordTable />
     </Container>
   )
 }
