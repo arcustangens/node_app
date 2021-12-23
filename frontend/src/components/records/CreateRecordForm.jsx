@@ -85,7 +85,6 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
       })
       handleDialog()
     } catch (e) {
-      console.log(e)
       setError(e.message)
     }
   }
@@ -120,8 +119,6 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     fetchTypyWymiaru()
     fetchMaterialy()
   }, [])
-
-  console.log(watch())
 
   if (isDataLoading()) {
     return (

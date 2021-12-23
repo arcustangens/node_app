@@ -30,7 +30,24 @@ const RecordDetails = ({
     }
   }
 
-  const { kontrahent, nazwa, numer, typ, a, b, c, d, e, f, material } = record
+  const {
+    kontrahent,
+    nazwa,
+    numer,
+    typ,
+    a,
+    b,
+    c,
+    d,
+    e,
+    f,
+    material,
+    uwagi,
+    plik,
+    plik_thumbnail: plikThumbnail,
+  } = record
+
+  console.log(`http://localhost:3000/uploads/${plikThumbnail}`)
 
   return (
     <>
@@ -54,6 +71,15 @@ const RecordDetails = ({
             </Grid>
             <Grid item>
               Materiał: <strong>{material}</strong>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                inlineSize: 250,
+                overflowWrap: 'break-word',
+              }}
+            >
+              Uwagi: <i>{uwagi}</i>
             </Grid>
             <Grid item container spacing={3} sx={{ marginTop: 2 }}>
               <Grid item>
@@ -84,11 +110,17 @@ const RecordDetails = ({
             </Grid>
           </Grid>
           <Grid item xs={8}>
-            <img
-              alt='thumbnail'
-              src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fe-hortico.pl%2Fuserdata%2Fgfx%2Fd7b6765ceecab4ad10703f28553ee41f.jpg'
-              style={{ width: 600, height: 'auto', borderRadious: '3%' }}
-            />
+            <a
+              href={`http://localhost:3000/uploads/${plik}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <img
+                alt='thumbnail'
+                src={`http://localhost:3000/uploads/${plikThumbnail}`}
+                style={{ width: 600, height: 'auto', borderRadius: '3%' }}
+              />
+            </a>
           </Grid>
         </Grid>
         {deleteError && <Alert severity='error'>{deleteError}</Alert>}
