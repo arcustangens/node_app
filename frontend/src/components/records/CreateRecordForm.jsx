@@ -1,30 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { UpdateRecordSchema } from '../../validation/UpdateRecordSchema'
 import { RecordSchema } from '../../validation/RecordSchema'
-import { Grid, Alert, Button } from '@mui/material'
+import { Grid, Alert, Button, CircularProgress } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import RecordSelect from '../../utils/form/RecordSelect'
 import RecordTextField from '../../utils/form/RecordTextField'
-import RecordNumberField from '../../utils/form/RecordNumberField'
 import RecordFileField from '../../utils/form/RecordFileField'
+import _ from 'lodash'
 
-const CreateRecordForm = ({
-  handleDialog,
-  kontrahenci,
-  typyWymiaru,
-  materialy,
-  appendRecord,
-}) => {
+const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
   const [error, setError] = useState()
+  const [kontrahenci, setKontrahenci] = useState([])
+  const [kontrahenciLoading, setKontrahenciLoading] = useState(false)
+  const [typyWymiaru, setTypyWymiaru] = useState([])
+  const [typyWymiaruLoading, setTypyWymiaruLoading] = useState(false)
+  const [materialy, setMaterialy] = useState([])
+  const [materialyLoading, setMaterialyLoading] = useState(false)
+
+  const convertNullToUndef = (x) => (_.isNull(x) ? undefined : x)
 
   const {
     handleSubmit,
     control,
     register,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm({
-    resolver: yupResolver(RecordSchema),
+    resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
+    defaultValues: edit
+      ? {
+          ...record,
+          a: convertNullToUndef(record.a),
+          b: convertNullToUndef(record.b),
+          c: convertNullToUndef(record.c),
+          d: convertNullToUndef(record.d),
+          e: convertNullToUndef(record.e),
+          f: convertNullToUndef(record.f),
+          kontrahent: kontrahenci.find(
+            ({ id }) => id === record.id_kontrahenta
+          ),
+          typ: typyWymiaru.find(({ id }) => id === record.id_typu_wymiaru),
+          material: materialy.find(({ id }) => id === record.id_materialu),
+          plikThumbnail: record.plik_thumbnail,
+        }
+      : {
+          kontrahent: 1,
+          typ: 1,
+          material: 1,
+        },
   })
 
   const buildRecordBody = (data) => {
@@ -42,17 +67,77 @@ const CreateRecordForm = ({
 
     const { plik, plikThumbnail, ...dataWithoutImages } = data
     const postBody = buildRecordBody(dataWithoutImages)
-    postBody.append('plik', plik[0])
-    postBody.append('plikThumbnail', plikThumbnail[0])
+    if (plik) postBody.append('plik', plik[0])
+    if (plikThumbnail) postBody.append('plikThumbnail', plikThumbnail[0])
 
     try {
-      const { data } = await axios.post('/form', postBody)
-      appendRecord(data)
+      const { data } = edit
+        ? await axios.put(`/form/${record.id}`, postBody)
+        : await axios.post('/form', postBody)
+      appendRecord({
+        ...data,
+        kontrahent: kontrahenci.find((x) => x.value === +data.kontrahent).label,
+        material: materialy.find((x) => x.value === +data.material).label,
+        typ: typyWymiaru.find((x) => x.value === +data.typ).label,
+      })
       handleDialog()
     } catch (e) {
       console.log(e)
       setError(e.message)
     }
+  }
+
+  const fetchKontrahenci = async () => {
+    setKontrahenciLoading(true)
+    const { data } = await axios.get('/kontrahenci')
+    setKontrahenci(data)
+    setKontrahenciLoading(false)
+  }
+
+  const fetchTypyWymiaru = async () => {
+    setTypyWymiaruLoading(true)
+    const { data } = await axios.get('/typ_wymiaru')
+    setTypyWymiaru(data)
+    setTypyWymiaruLoading(false)
+  }
+
+  const fetchMaterialy = async () => {
+    setMaterialyLoading(true)
+    const { data } = await axios.get('/materialy')
+    setMaterialy(data)
+    setMaterialyLoading(false)
+  }
+
+  const isDataLoading = () => {
+    return kontrahenciLoading || typyWymiaruLoading || materialyLoading
+  }
+
+  useEffect(() => {
+    fetchKontrahenci()
+    fetchTypyWymiaru()
+    fetchMaterialy()
+  }, [])
+
+  if (isDataLoading()) {
+    return (
+      <Grid
+        container
+        justifyContent='center'
+        sx={{
+          paddingTop: 10,
+        }}
+      >
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+    )
+  } else if (!kontrahenci.length || !typyWymiaru.length || !materialy.length) {
+    return (
+      <Alert severity='error'>
+        Najpierw dodaj choć jednego kontrahenta, typ wymiaru i materiał!
+      </Alert>
+    )
   }
 
   return (
@@ -79,7 +164,7 @@ const CreateRecordForm = ({
       />
       <Grid container spacing={1}>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'a'}
@@ -87,7 +172,7 @@ const CreateRecordForm = ({
           />
         </Grid>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'b'}
@@ -95,7 +180,7 @@ const CreateRecordForm = ({
           />
         </Grid>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'c'}
@@ -103,7 +188,7 @@ const CreateRecordForm = ({
           />
         </Grid>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'d'}
@@ -111,7 +196,7 @@ const CreateRecordForm = ({
           />
         </Grid>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'e'}
@@ -119,7 +204,7 @@ const CreateRecordForm = ({
           />
         </Grid>
         <Grid item xs={2}>
-          <RecordNumberField
+          <RecordTextField
             errors={errors}
             control={control}
             name={'f'}

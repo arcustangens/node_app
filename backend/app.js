@@ -33,44 +33,9 @@ app.post(
     { name: 'plikThumbnail', maxCount: 1 },
   ]),
   async (req, res) => {
-    const { plik, plikThumbnail } = req.files
-    console.log(req.body)
-    const {
-      kontrahent,
-      numer,
-      typWymiaru,
-      a,
-      b,
-      c,
-      d,
-      e,
-      f,
-      nazwa,
-      material,
-      uwagi,
-    } = req.body
-
-    console.log(plik[0].filename)
-    console.log(plikThumbnail[0].filename)
-    console.log(
-      kontrahent,
-      numer,
-      typWymiaru,
-      a,
-      b,
-      c,
-      d,
-      e,
-      f,
-      nazwa,
-      material,
-      uwagi
-    )
-
-    const xd = await conn.query(
-      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [
-        null,
+    try {
+      const { plik, plikThumbnail } = req.files
+      const {
         kontrahent,
         numer,
         typWymiaru,
@@ -83,13 +48,57 @@ app.post(
         nazwa,
         material,
         uwagi,
-        plik[0].filename,
-        plikThumbnail[0].filename,
-      ]
-    )
-    console.log(xd)
+      } = req.body
 
-    res.sendStatus(200)
+      const parsedA = parseFloat(a) || null
+      const parsedB = parseFloat(b) || null
+      const parsedC = parseFloat(c) || null
+      const parsedD = parseFloat(d) || null
+      const parsedE = parseFloat(e) || null
+      const parsedF = parseFloat(f) || null
+
+      const queryRes = await conn.query(
+        'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id',
+        [
+          null,
+          kontrahent,
+          numer,
+          typWymiaru,
+          parsedA,
+          parsedB,
+          parsedC,
+          parsedD,
+          parsedE,
+          parsedF,
+          nazwa,
+          material,
+          uwagi,
+          plik[0].filename,
+          plikThumbnail[0].filename,
+        ]
+      )
+
+      res.send({
+        id: queryRes[0].id,
+        kontrahent,
+        numer,
+        typ: typWymiaru,
+        parsedA,
+        parsedB,
+        parsedC,
+        parsedD,
+        parsedE,
+        parsedF,
+        nazwa,
+        material,
+        uwagi,
+        plik: plik[0].filename,
+        plik_thumbnail: plikThumbnail[0].filename,
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(404).send(err)
+    }
   }
 )
 app.get('/records', async (req, res) => {
@@ -100,7 +109,6 @@ app.get('/records', async (req, res) => {
       LEFT JOIN typ_wymiaru t ON r.id_typu_wymiaru = t.id
       LEFT JOIN materialy m ON r.id_materialu = m.id;`
     )
-    console.log(data)
     res.send(data)
   } catch (err) {
     res.status(404).send(err)

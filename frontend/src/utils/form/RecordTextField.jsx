@@ -18,6 +18,7 @@ const RecordTextField = ({ errors, control, name, label, multiline }) => {
             aria-describedby={`${name}-error`}
             multiline={multiline}
             maxRows={4}
+            defaultValue={field.value}
           />
           <FormHelperText id={`${name}-error`}>
             {errors[name]?.message}

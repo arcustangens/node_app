@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
+import ViewRecordDialog from './ViewRecordDialog'
 
 // const columns = [
 //     { field: 'id', headerName: 'ID', width: 70 },
@@ -28,40 +29,44 @@ const columns = [
   { field: 'kontrahent', headerName: 'Kontrahent', width: 150 },
   { field: 'numer', headerName: 'Numer seryjny', width: 150 },
   { field: 'typ', headerName: 'Typ wymiarów', width: 170 },
-  { field: 'a', headerName: 'A', sortable: false, width: 80 },
-  { field: 'b', headerName: 'B', sortable: false, width: 80 },
-  { field: 'c', headerName: 'C', sortable: false, width: 80 },
-  { field: 'd', headerName: 'D', sortable: false, width: 80 },
-  { field: 'e', headerName: 'E', sortable: false, width: 80 },
+  { field: 'a', headerName: 'A', width: 80 },
+  { field: 'b', headerName: 'B', width: 80 },
+  { field: 'c', headerName: 'C', width: 80 },
+  { field: 'd', headerName: 'D', width: 80 },
+  { field: 'e', headerName: 'E', width: 80 },
   { field: 'nazwa', headerName: 'Nazwa', width: 200 },
   { field: 'material', headerName: 'Materiał', width: 150 },
   { field: 'uwagi', headerName: 'Uwagi', width: 200 },
 ]
 
-const RecordTable = ({ records }) => {
-  console.log(records)
+const RecordTable = ({ records, updateRecord }) => {
+  const viewRecordDialogRef = useRef(null)
+
   if (!records) {
     return <span />
   }
 
   return (
-    <DataGrid
-      autoHeight
-      autoPageSize
-      density='compact'
-      disableDensitySelector
-      disableColumnSelector
-      // disableColumnMenu
-      // disableColumnFilter
-      disableSelectionOnClick
-      rows={records}
-      columns={columns}
-      pageSize={12}
-      rowsPerPageOptions={[12]}
-      onRowClick={({ row }) => {
-        window.open(`localhost:3000/uploads/${row.plik}`, '_blank')
-      }}
-    />
+    <>
+      <ViewRecordDialog ref={viewRecordDialogRef} updateRecord={updateRecord} />
+      <DataGrid
+        autoHeight
+        autoPageSize
+        density='compact'
+        disableDensitySelector
+        disableColumnSelector
+        // disableColumnMenu
+        // disableColumnFilter
+        disableSelectionOnClick
+        rows={records}
+        columns={columns}
+        pageSize={12}
+        rowsPerPageOptions={[12]}
+        onRowClick={({ row }) => {
+          viewRecordDialogRef.current.handleOpen(row)
+        }}
+      />
+    </>
   )
 }
 

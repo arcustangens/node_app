@@ -19,6 +19,13 @@ const App = () => {
     setRecords([...records, newRecord])
   }
 
+  const updateRecord = (updatedRecord) => {
+    setRecords([
+      ...records.filter(({ id }) => id === updatedRecord.id),
+      updatedRecord,
+    ])
+  }
+
   useEffect(() => {
     fetchRecords()
   }, [])
@@ -46,7 +53,7 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <RecordTable records={records} />
+          <RecordTable records={records} updateRecord={updateRecord} />
         </Grid>
       </Grid>
     </Container>
