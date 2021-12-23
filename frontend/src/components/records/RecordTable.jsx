@@ -39,7 +39,7 @@ const columns = [
   { field: 'uwagi', headerName: 'Uwagi', width: 200 },
 ]
 
-const RecordTable = ({ records, updateRecord }) => {
+const RecordTable = ({ records, updateRecord, removeRecord }) => {
   const viewRecordDialogRef = useRef(null)
 
   if (!records) {
@@ -48,7 +48,11 @@ const RecordTable = ({ records, updateRecord }) => {
 
   return (
     <>
-      <ViewRecordDialog ref={viewRecordDialogRef} updateRecord={updateRecord} />
+      <ViewRecordDialog
+        ref={viewRecordDialogRef}
+        updateRecord={updateRecord}
+        removeRecord={removeRecord}
+      />
       <DataGrid
         autoHeight
         autoPageSize

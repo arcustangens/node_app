@@ -12,7 +12,7 @@ import ArrowBack from '@mui/icons-material/ArrowBack'
 import RecordDetails from './RecordDetails'
 import CreateRecordForm from './CreateRecordForm'
 
-const ViewRecordDialog = forwardRef(({ updateRecord }, ref) => {
+const ViewRecordDialog = forwardRef(({ updateRecord, removeRecord }, ref) => {
   const [record, setRecord] = useState(null)
   const [editMode, setEditMode] = useState(false)
 
@@ -67,7 +67,7 @@ const ViewRecordDialog = forwardRef(({ updateRecord }, ref) => {
             </DialogTitle>
             <DialogContent sx={{ minWidth: 400, minHeight: 300 }}>
               <CreateRecordForm
-                updateRecord={updateRecord}
+                appendRecord={updateRecord}
                 handleDialog={handleCloseEdit}
                 edit
                 record={record}
@@ -75,7 +75,12 @@ const ViewRecordDialog = forwardRef(({ updateRecord }, ref) => {
             </DialogContent>
           </>
         ) : (
-          <RecordDetails record={record} handleOpenEdit={handleOpenEdit} />
+          <RecordDetails
+            record={record}
+            handleOpenEdit={handleOpenEdit}
+            handleClose={handleClose}
+            removeRecord={removeRecord}
+          />
         )}
         <DialogActions>
           <Button onClick={handleClose}>Wróć</Button>

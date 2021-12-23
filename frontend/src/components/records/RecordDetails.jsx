@@ -1,8 +1,24 @@
 import { Button, DialogContent, DialogTitle, Grid } from '@mui/material'
+import axios from 'axios'
 
-const RecordDetails = ({ record, handleOpenEdit }) => {
+const RecordDetails = ({
+  record,
+  handleOpenEdit,
+  handleClose,
+  removeRecord,
+}) => {
   if (!record) {
     return <span />
+  }
+
+  const deleteRecord = async () => {
+    try {
+      await axios.delete(`/form/${record.id}`)
+      removeRecord(record)
+      handleClose()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const { kontrahent, nazwa, numer, typ, a, b, c, d, e, f, material } = record
@@ -41,7 +57,17 @@ const RecordDetails = ({ record, handleOpenEdit }) => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button color='error' variant='contained'>
+                <Button
+                  color='error'
+                  variant='contained'
+                  onClick={() => {
+                    if (
+                      window.confirm('Czy na pewno chcesz usunąć ten rekord?')
+                    ) {
+                      deleteRecord()
+                    }
+                  }}
+                >
                   Usuń rekord
                 </Button>
               </Grid>

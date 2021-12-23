@@ -26,6 +26,10 @@ const App = () => {
     ])
   }
 
+  const removeRecord = (removedRecord) => {
+    setRecords([...records.filter(({ id }) => id !== removedRecord.id)])
+  }
+
   useEffect(() => {
     fetchRecords()
   }, [])
@@ -53,7 +57,11 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <RecordTable records={records} updateRecord={updateRecord} />
+          <RecordTable
+            records={records}
+            updateRecord={updateRecord}
+            removeRecord={removeRecord}
+          />
         </Grid>
       </Grid>
     </Container>

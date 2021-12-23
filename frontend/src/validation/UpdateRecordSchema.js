@@ -13,12 +13,13 @@ export const UpdateRecordSchema = yup.object().shape({
   nazwa: yup.string().required('Wymagane'),
   material: yup.string().required('Wymagane'),
   plik: yup.mixed().test('fileType', 'Błędne rozszerzenie pliku', (value) => {
+    if (value.length === 0) return true
     return /^image\/.+$/.test(value[0].type)
   }),
   plikThumbnail: yup
     .mixed()
     .test('fileType', 'Błędne rozszerzenie pliku', (value) => {
-      console.log(value)
+      if (value.length === 0) return true
       return /^image\/.+$/.test(value[0].type)
     }),
 })

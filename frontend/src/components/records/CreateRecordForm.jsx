@@ -31,19 +31,22 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
     defaultValues: edit
       ? {
-          ...record,
+          ..._.omit(record, ['plik', 'plik_thumbnail', 'typ']),
           a: convertNullToUndef(record.a),
           b: convertNullToUndef(record.b),
           c: convertNullToUndef(record.c),
           d: convertNullToUndef(record.d),
           e: convertNullToUndef(record.e),
           f: convertNullToUndef(record.f),
-          kontrahent: kontrahenci.find(
-            ({ id }) => id === record.id_kontrahenta
-          ),
-          typ: typyWymiaru.find(({ id }) => id === record.id_typu_wymiaru),
-          material: materialy.find(({ id }) => id === record.id_materialu),
-          plikThumbnail: record.plik_thumbnail,
+          kontrahent: kontrahenci.length
+            ? kontrahenci.find(({ label }) => label === record.kontrahent).value
+            : undefined,
+          typWymiaru: typyWymiaru.length
+            ? typyWymiaru.find(({ label }) => label === record.typ).value
+            : undefined,
+          material: materialy.length
+            ? materialy.find(({ label }) => label === record.material).value
+            : undefined,
         }
       : {
           kontrahent: 1,
@@ -117,6 +120,8 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     fetchTypyWymiaru()
     fetchMaterialy()
   }, [])
+
+  console.log(watch())
 
   if (isDataLoading()) {
     return (
