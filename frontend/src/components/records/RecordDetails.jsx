@@ -1,5 +1,6 @@
-import { Button, DialogContent, DialogTitle, Grid } from '@mui/material'
+import { Alert, Button, DialogContent, DialogTitle, Grid } from '@mui/material'
 import axios from 'axios'
+import { useState } from 'react'
 
 const RecordDetails = ({
   record,
@@ -7,17 +8,25 @@ const RecordDetails = ({
   handleClose,
   removeRecord,
 }) => {
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [deleteError, setDeleteError] = useState()
+
   if (!record) {
     return <span />
   }
 
   const deleteRecord = async () => {
+    setDeleteLoading(true)
+    setDeleteError(null)
+
     try {
       await axios.delete(`/form/${record.id}`)
       removeRecord(record)
       handleClose()
     } catch (e) {
-      console.log(e)
+      setDeleteError(e?.message)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -60,6 +69,7 @@ const RecordDetails = ({
                 <Button
                   color='error'
                   variant='contained'
+                  disabled={deleteLoading}
                   onClick={() => {
                     if (
                       window.confirm('Czy na pewno chcesz usunąć ten rekord?')
@@ -81,6 +91,7 @@ const RecordDetails = ({
             />
           </Grid>
         </Grid>
+        {deleteError && <Alert severity='error'>{deleteError}</Alert>}
       </DialogContent>
     </>
   )
