@@ -114,6 +114,15 @@ app.get('/records', async (req, res) => {
     res.status(404).send(err)
   }
 })
+app.delete('/records/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    await conn.query(`DELETE FROM records WHERE id = (?)`, id)
+    res.sendStatus(200)
+  } catch (err) {
+    res.status(404).send(err)
+  }
+})
 
 app.get('/kontrahenci', async (req, res) => {
   try {

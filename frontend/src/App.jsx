@@ -47,9 +47,6 @@ const App = () => {
     }
   }, [records, searchFilter])
 
-  console.log(records)
-  console.log(searchFilter)
-
   return (
     <Container
       maxWidth='xl'

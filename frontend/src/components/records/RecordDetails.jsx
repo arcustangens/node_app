@@ -20,7 +20,7 @@ const RecordDetails = ({
     setDeleteError(null)
 
     try {
-      await axios.delete(`/form/${record.id}`)
+      await axios.delete(`/records/${record.id}`)
       removeRecord(record)
       handleClose()
     } catch (e) {
