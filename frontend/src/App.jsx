@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material'
+import { Container, Grid, TextField } from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateKontrahentDialog from './components/kontrahenci/CreateKontrahentDialog'
@@ -6,9 +6,12 @@ import CreateMaterialDialog from './components/materialy/CreateMaterialDialog'
 import CreateTypWymiaruDialog from './components/wymiary/CreateTypWymiaruDialog'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { DebounceInput } from 'react-debounce-input'
 
 const App = () => {
-  const [records, setRecords] = useState()
+  const [records, setRecords] = useState([])
+  const [filteredRecords, setFilteredRecords] = useState(records)
+  const [searchFilter, setSearchFilter] = useState('')
 
   const fetchRecords = async () => {
     const { data } = await axios.get('/records')
@@ -34,6 +37,19 @@ const App = () => {
     fetchRecords()
   }, [])
 
+  useEffect(() => {
+    if (records?.length) {
+      setFilteredRecords([
+        ...records.filter(({ nazwa }) =>
+          nazwa.includes(searchFilter.toString())
+        ),
+      ])
+    }
+  }, [records, searchFilter])
+
+  console.log(records)
+  console.log(searchFilter)
+
   return (
     <Container
       maxWidth='xl'
@@ -57,8 +73,18 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid item>
+          <DebounceInput
+            element={TextField}
+            id='record-filter'
+            label='Szukaj'
+            value={searchFilter}
+            onChange={({ target: { value } }) => setSearchFilter(value)}
+            debounceTimeout={400}
+          />
+        </Grid>
+        <Grid item>
           <RecordTable
-            records={records}
+            records={filteredRecords}
             updateRecord={updateRecord}
             removeRecord={removeRecord}
           />

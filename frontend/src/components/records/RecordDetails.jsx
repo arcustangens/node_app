@@ -47,8 +47,6 @@ const RecordDetails = ({
     plik_thumbnail: plikThumbnail,
   } = record
 
-  console.log(`http://localhost:3000/uploads/${plikThumbnail}`)
-
   return (
     <>
       <DialogTitle>{nazwa}</DialogTitle>

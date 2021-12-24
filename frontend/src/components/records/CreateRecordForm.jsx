@@ -25,7 +25,6 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     handleSubmit,
     control,
     register,
-    watch,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
