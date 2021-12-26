@@ -13,7 +13,7 @@ import RecordDetails from './RecordDetails'
 import CreateRecordForm from './CreateRecordForm'
 
 const ViewRecordDialog = forwardRef(
-  ({ fetchRecords, kontrahenci, typyWymiaru, materialy }, ref) => {
+  ({ fetchRecords, contractors, dimensionTypes, materials }, ref) => {
     const [record, setRecord] = useState(null)
     const [editMode, setEditMode] = useState(false)
 
@@ -72,9 +72,9 @@ const ViewRecordDialog = forwardRef(
                   handleDialog={handleCloseEdit}
                   edit
                   record={record}
-                  kontrahenci={kontrahenci}
-                  typyWymiaru={typyWymiaru}
-                  materialy={materialy}
+                  contractors={contractors}
+                  dimensionTypes={dimensionTypes}
+                  materials={materials}
                 />
               </DialogContent>
             </>
@@ -84,6 +84,9 @@ const ViewRecordDialog = forwardRef(
               handleOpenEdit={handleOpenEdit}
               handleClose={handleClose}
               fetchRecords={fetchRecords}
+              contractors={contractors}
+              dimensionTypes={dimensionTypes}
+              materials={materials}
             />
           )}
           <DialogActions>

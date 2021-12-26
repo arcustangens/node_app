@@ -7,20 +7,24 @@ import {
 } from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
-import CreateKontrahentDialog from './components/kontrahenci/CreateKontrahentDialog'
-import CreateMaterialDialog from './components/materialy/CreateMaterialDialog'
-import CreateTypWymiaruDialog from './components/wymiary/CreateTypWymiaruDialog'
+import CreateContractorDialog from './components/contractors/CreateContractorDialog'
+import CreateMaterialDialog from './components/materials/CreateMaterialDialog'
+import CreateDimensionTypeDialog from './components/dimensionTypes/CreateDimensionTypeDialog'
 import { useEffect, useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { useAxiosGet } from './utils/useFetch'
 
 const App = () => {
-  const [kontrahenci, kontrahenciLoading, kontrahenciError, fetchKontrahenci] =
-    useAxiosGet('/kontrahenci')
-  const [typyWymiaru, typyWymiaruLoading, typyWymiaruError, fetchTypyWymiaru] =
-    useAxiosGet('/typ_wymiaru')
-  const [materialy, materialyLoading, materialyError, fetchMaterialy] =
-    useAxiosGet('/materialy')
+  const [contractors, contractorsLoading, contractorsError, fetchContractors] =
+    useAxiosGet('/contractors')
+  const [
+    dimensionTypes,
+    dimensionTypesLoading,
+    dimensionTypesError,
+    fetchDimensionTypes,
+  ] = useAxiosGet('/dimensionTypes')
+  const [materials, materialsLoading, materialsError, fetchMaterials] =
+    useAxiosGet('/materials')
   const [records, recordsLoading, recordsError, fetchRecords] =
     useAxiosGet('/records')
   const [filteredRecords, setFilteredRecords] = useState(records)
@@ -29,17 +33,17 @@ const App = () => {
   useEffect(() => {
     if (records?.length) {
       setFilteredRecords([
-        ...records.filter(({ nazwa }) =>
-          nazwa.toLowerCase().includes(searchFilter.toString().toLowerCase())
+        ...records.filter(({ name }) =>
+          name.toLowerCase().includes(String(searchFilter).toLowerCase())
         ),
       ])
     }
   }, [records, searchFilter])
 
   const isDataLoading =
-    kontrahenciLoading ||
-    typyWymiaruLoading ||
-    materialyLoading ||
+    contractorsLoading ||
+    dimensionTypesLoading ||
+    materialsLoading ||
     recordsLoading
 
   if (isDataLoading) {
@@ -66,28 +70,34 @@ const App = () => {
           <Grid item>
             <CreateRecordDialog
               fetchRecords={fetchRecords}
-              kontrahenci={kontrahenci}
-              typyWymiaru={typyWymiaru}
-              materialy={materialy}
+              contractors={contractors}
+              dimensionTypes={dimensionTypes}
+              materials={materials}
             />
           </Grid>
           <Grid item>
-            <CreateKontrahentDialog fetchKontrahenci={fetchKontrahenci} />
+            <CreateContractorDialog fetchContractors={fetchContractors} />
           </Grid>
           <Grid item>
-            <CreateTypWymiaruDialog fetchTypyWymiaru={fetchTypyWymiaru} />
+            <CreateDimensionTypeDialog
+              fetchDimensionTypes={fetchDimensionTypes}
+            />
           </Grid>
           <Grid item>
-            <CreateMaterialDialog fetchMaterialy={fetchMaterialy} />
+            <CreateMaterialDialog fetchMaterials={fetchMaterials} />
           </Grid>
         </Grid>
-        {[kontrahenciError, typyWymiaruError, materialyError, recordsError].map(
-          (e, i) =>
-            e ? (
-              <Grid item key={i}>
-                <Alert severity='error'>{e}</Alert>
-              </Grid>
-            ) : null
+        {[
+          contractorsError,
+          dimensionTypesError,
+          materialsError,
+          recordsError,
+        ].map((e, i) =>
+          e ? (
+            <Grid item key={i}>
+              <Alert severity='error'>{e}</Alert>
+            </Grid>
+          ) : null
         )}
         <Grid item>
           <DebounceInput
@@ -103,9 +113,9 @@ const App = () => {
           <RecordTable
             records={filteredRecords}
             fetchRecords={fetchRecords}
-            kontrahenci={kontrahenci}
-            typyWymiaru={typyWymiaru}
-            materialy={materialy}
+            contractors={contractors}
+            dimensionTypes={dimensionTypes}
+            materials={materials}
           />
         </Grid>
       </Grid>

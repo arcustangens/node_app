@@ -10,9 +10,9 @@ import CreateRecordForm from './CreateRecordForm'
 
 const CreateRecordDialog = ({
   fetchRecords,
-  kontrahenci,
-  typyWymiaru,
-  materialy,
+  contractors,
+  dimensionTypes,
+  materials,
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -35,9 +35,9 @@ const CreateRecordDialog = ({
           <CreateRecordForm
             handleDialog={handleClose}
             fetchRecords={fetchRecords}
-            kontrahenci={kontrahenci}
-            typyWymiaru={typyWymiaru}
-            materialy={materialy}
+            contractors={contractors}
+            dimensionTypes={dimensionTypes}
+            materials={materials}
           />
         </DialogContent>
         <DialogActions>

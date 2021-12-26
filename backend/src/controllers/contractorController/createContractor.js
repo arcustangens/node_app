@@ -2,12 +2,12 @@ import { dbConnection } from '../../../database.js'
 
 export const createContractor = async (req, res) => {
   try {
-    const { kontrahent, akronim } = req.body
+    const { contractor, acronym } = req.body
 
-    await dbConnection.query('INSERT INTO kontrahenci value (?, ?, ?)', [
+    await dbConnection.query('INSERT INTO contractors value (?, ?, ?)', [
       null,
-      kontrahent,
-      akronim,
+      contractor,
+      acronym,
     ])
 
     res.sendStatus(200)

@@ -2,7 +2,7 @@ import { dbConnection } from '../../../database.js'
 
 export const getMaterials = async (req, res) => {
   try {
-    const data = await dbConnection.query('SELECT * FROM materialy;')
+    const data = await dbConnection.query('SELECT * FROM materials;')
     const parsedData = data.map(({ id, material }) => ({
       value: id,
       label: material,

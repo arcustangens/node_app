@@ -2,11 +2,11 @@ import { dbConnection } from '../../../database.js'
 
 export const createDimensionType = async (req, res) => {
   try {
-    const { typWymiaru } = req.body
+    const { dimensionType } = req.body
 
-    await dbConnection.query('INSERT INTO typ_wymiaru value (?, ?)', [
+    await dbConnection.query('INSERT INTO dimensionTypes value (?, ?)', [
       null,
-      typWymiaru,
+      dimensionType,
     ])
 
     res.sendStatus(200)

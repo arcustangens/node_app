@@ -4,9 +4,9 @@ import { Alert, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
-import { MaterialSchema } from '../../validation/MaterialSchema'
+import { TypWymiaruSchema } from '../../validation/DimensionTypeSchema'
 
-const CreateMaterialForm = ({ handleDialog, fetchMaterialy }) => {
+const CreateTypWymiaruForm = ({ handleDialog, fetchDimensionTypes }) => {
   const [error, setError] = useState()
 
   const {
@@ -14,14 +14,14 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterialy }) => {
     register,
     formState: { isSubmitting, errors },
   } = useForm({
-    resolver: yupResolver(MaterialSchema),
+    resolver: yupResolver(TypWymiaruSchema),
   })
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('/materialy', data)
-      fetchMaterialy()
+      await axios.post('/dimensionTypes', data)
       handleDialog()
+      fetchDimensionTypes()
     } catch (e) {
       setError(e.message)
     }
@@ -32,8 +32,8 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterialy }) => {
       <RecordTextField
         errors={errors}
         register={register}
-        name={'material'}
-        label={'Materiał'}
+        name={'dimensionType'}
+        label={'Typ wymiaru'}
       />
 
       {error && <Alert severity='error'>{error}</Alert>}
@@ -50,4 +50,4 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterialy }) => {
   )
 }
 
-export default CreateMaterialForm
+export default CreateTypWymiaruForm

@@ -6,9 +6,9 @@ import {
   DialogTitle,
   Button,
 } from '@mui/material'
-import CreateTypWymiaruForm from './CreateTypWymiaruForm'
+import CreateContractorForm from './CreateContractorForm'
 
-const CreateTypWymiaruDialog = ({ fetchTypyWymiaru }) => {
+const CreateContractorDialog = ({ fetchContractors }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -22,14 +22,14 @@ const CreateTypWymiaruDialog = ({ fetchTypyWymiaru }) => {
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
-        Dodaj typ wymiaru
+        Dodaj kontraktora
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Dodaj typ wymiaru</DialogTitle>
+        <DialogTitle>Dodaj kontraktora</DialogTitle>
         <DialogContent>
-          <CreateTypWymiaruForm
+          <CreateContractorForm
             handleDialog={handleClose}
-            fetchTypyWymiaru={fetchTypyWymiaru}
+            fetchContractors={fetchContractors}
           />
         </DialogContent>
         <DialogActions>
@@ -40,4 +40,4 @@ const CreateTypWymiaruDialog = ({ fetchTypyWymiaru }) => {
   )
 }
 
-export default CreateTypWymiaruDialog
+export default CreateContractorDialog

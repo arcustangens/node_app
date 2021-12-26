@@ -2,10 +2,10 @@ import { dbConnection } from '../../../database.js'
 
 export const getContractors = async (req, res) => {
   try {
-    const data = await dbConnection.query('SELECT * FROM kontrahenci;')
-    const parsedData = data.map(({ id, kontrahent }) => ({
+    const data = await dbConnection.query('SELECT * FROM contractors;')
+    const parsedData = data.map(({ id, contractor }) => ({
       value: id,
-      label: kontrahent,
+      label: contractor,
     }))
     res.send(parsedData)
   } catch (err) {

@@ -14,8 +14,8 @@ const headCells = [
     label: 'Nazwa',
   },
   {
-    id: 'kontrahent',
-    label: 'Kontrahent',
+    id: 'contractor',
+    label: 'Contractor',
   },
   {
     id: 'numer',

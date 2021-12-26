@@ -2,20 +2,20 @@ import { dbConnection } from '../../../database.js'
 
 export const createRecord = async (req, res) => {
   try {
-    const { plik, plikThumbnail } = req.files
+    const { mainFile, thumbnailFile } = req.files
     const {
-      kontrahent,
-      numer,
-      typWymiaru,
+      contractor,
+      number,
+      dimensionType,
       a,
       b,
       c,
       d,
       e,
       f,
-      nazwa,
+      name,
       material,
-      uwagi,
+      comments,
     } = req.body
 
     const parsedA = parseFloat(a) || null
@@ -24,45 +24,30 @@ export const createRecord = async (req, res) => {
     const parsedD = parseFloat(d) || null
     const parsedE = parseFloat(e) || null
     const parsedF = parseFloat(f) || null
+    const parsedComments = String(comments || '')
 
-    const queryRes = await dbConnection.query(
+    await dbConnection.query(
       'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id',
       [
         null,
-        kontrahent,
-        numer,
-        typWymiaru,
+        contractor,
+        number,
+        dimensionType,
         parsedA,
         parsedB,
         parsedC,
         parsedD,
         parsedE,
         parsedF,
-        nazwa,
+        name,
         material,
-        uwagi,
-        plik[0].filename,
-        plikThumbnail[0].filename,
+        parsedComments,
+        mainFile[0].filename,
+        thumbnailFile[0].filename,
       ]
     )
 
-    res.send({
-      id: queryRes[0].id,
-      kontrahent,
-      numer,
-      typ: typWymiaru,
-      parsedA,
-      parsedB,
-      parsedC,
-      parsedD,
-      parsedE,
-      parsedF,
-      nazwa,
-      material,
-      uwagi,
-      plik: plik[0].filename,
-      plik_thumbnail: plikThumbnail[0].filename,
-    })
+    res.sendStatus(200)
   } catch (err) {
     console.log(err)
     res.status(404).send(err)

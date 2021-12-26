@@ -3,6 +3,7 @@ import multer from 'multer'
 import { createRecord } from '../controllers/recordController/createRecord.js'
 import { deleteRecord } from '../controllers/recordController/deleteRecord.js'
 import { getRecords } from '../controllers/recordController/getRecords.js'
+import { updateRecord } from '../controllers/recordController/updateRecord.js'
 
 const router = express.Router()
 
@@ -21,21 +22,20 @@ const upload = multer({ storage })
 router.post(
   '/',
   upload.fields([
-    { name: 'plik', maxCount: 1 },
-    { name: 'plikThumbnail', maxCount: 1 },
+    { name: 'mainFile', maxCount: 1 },
+    { name: 'thumbnailFile', maxCount: 1 },
   ]),
   createRecord
 )
 router.get('/', getRecords)
-// # TODO
-// router.put(
-//   '/:id',
-//   upload.fields([
-//     { name: 'plik', maxCount: 1 },
-//     { name: 'plikThumbnail', maxCount: 1 },
-//   ]),
-//   updateRecord
-// )
+router.put(
+  '/:id',
+  upload.fields([
+    { name: 'mainFile', maxCount: 1 },
+    { name: 'thumbnailFile', maxCount: 1 },
+  ]),
+  updateRecord
+)
 router.delete('/:id', deleteRecord)
 
 export default router

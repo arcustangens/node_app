@@ -10,6 +10,7 @@ import {
   TableRow,
   Paper,
   Popover,
+  Alert,
 } from '@mui/material'
 import EnhancedTableToolbar from '../../utils/table/EnhancedTableToolbar'
 import EnhancedTableHead from '../../utils/table/EnhancedTableHead'
@@ -32,12 +33,12 @@ function getComparator(order, orderBy) {
 const RecordTable = ({
   records,
   fetchRecords,
-  kontrahenci,
-  typyWymiaru,
-  materialy,
+  contractors,
+  dimensionTypes,
+  materials,
 }) => {
   const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('nazwa')
+  const [orderBy, setOrderBy] = useState('name')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(25)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -76,7 +77,7 @@ const RecordTable = ({
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
   if (!records) {
-    return <span />
+    return <Alert severity='info'>Brak rekordów w bazie danych!</Alert>
   }
 
   return (
@@ -84,9 +85,9 @@ const RecordTable = ({
       <ViewRecordDialog
         ref={viewRecordDialogRef}
         fetchRecords={fetchRecords}
-        kontrahenci={kontrahenci}
-        typyWymiaru={typyWymiaru}
-        materialy={materialy}
+        contractors={contractors}
+        dimensionTypes={dimensionTypes}
+        materials={materials}
       />
       <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
@@ -126,18 +127,36 @@ const RecordTable = ({
                           viewRecordDialogRef.current.handleOpen(row)
                         }}
                       >
-                        <TableCell align='left'>{row.nazwa}</TableCell>
-                        <TableCell align='left'>{row.kontrahent}</TableCell>
-                        <TableCell align='left'>{row.numer}</TableCell>
-                        <TableCell align='left'>{row.typ}</TableCell>
+                        <TableCell align='left'>{row.name}</TableCell>
+                        <TableCell align='left'>
+                          {
+                            contractors.find(
+                              ({ value }) => value === row.contractorId
+                            )?.label
+                          }
+                        </TableCell>
+                        <TableCell align='left'>{row.number}</TableCell>
+                        <TableCell align='left'>
+                          {
+                            dimensionTypes.find(
+                              ({ value }) => value === row.dimensionTypeId
+                            )?.label
+                          }
+                        </TableCell>
                         <TableCell align='left'>{row.a}</TableCell>
                         <TableCell align='left'>{row.b}</TableCell>
                         <TableCell align='left'>{row.c}</TableCell>
                         <TableCell align='left'>{row.d}</TableCell>
                         <TableCell align='left'>{row.e}</TableCell>
                         <TableCell align='left'>{row.f}</TableCell>
-                        <TableCell align='left'>{row.material}</TableCell>
-                        <TableCell align='left'>{row.uwagi}</TableCell>
+                        <TableCell align='left'>
+                          {
+                            materials.find(
+                              ({ value }) => value === row.materialId
+                            )?.label
+                          }
+                        </TableCell>
+                        <TableCell align='left'>{row.comments}</TableCell>
                       </TableRow>
                     )
                   })}
@@ -182,10 +201,10 @@ const RecordTable = ({
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        {hoveredRow && hoveredRow?.plik_thumbnail ? (
+        {hoveredRow && hoveredRow?.thumbnailFile ? (
           <img
             alt='thumbnail'
-            src={`http://localhost:3000/uploads/${hoveredRow.plik_thumbnail}`}
+            src={`http://localhost:3000/uploads/${hoveredRow.thumbnailFile}`}
             style={{ width: 400, height: 'auto', padding: 10 }}
           />
         ) : (

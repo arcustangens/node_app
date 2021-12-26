@@ -1,12 +1,16 @@
 import { Alert, Button, DialogContent, DialogTitle, Grid } from '@mui/material'
 import axios from 'axios'
 import { useState } from 'react'
+import { buildDimension } from '../../utils/buildDimension'
 
 const RecordDetails = ({
   record,
   handleOpenEdit,
   handleClose,
   fetchRecords,
+  contractors,
+  dimensionTypes,
+  materials,
 }) => {
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteError, setDeleteError] = useState()
@@ -21,54 +25,61 @@ const RecordDetails = ({
 
     try {
       await axios.delete(`/records/${record.id}`)
-      fetchRecords()
       handleClose()
+      fetchRecords()
     } catch (e) {
       setDeleteError(e?.message)
-    } finally {
       setDeleteLoading(false)
     }
   }
 
   const {
-    kontrahent,
-    nazwa,
-    numer,
-    typ,
+    contractorId,
+    name,
+    number,
+    dimensionTypeId,
     a,
     b,
     c,
     d,
     e,
     f,
-    material,
-    uwagi,
-    plik,
-    plik_thumbnail: plikThumbnail,
+    materialId,
+    comments,
+    mainFile,
+    thumbnailFile,
   } = record
 
   return (
     <>
-      <DialogTitle>{nazwa}</DialogTitle>
+      <DialogTitle>{name}</DialogTitle>
       <DialogContent>
         <Grid container justifyContent='space-between' spacing={6}>
           <Grid item container direction='column' xs={4} spacing={1}>
             <Grid item>
-              Kontrahent: <strong>{kontrahent}</strong>
+              Contractor:{' '}
+              <strong>
+                {contractors.find(({ value }) => value === contractorId)?.label}
+              </strong>
             </Grid>
             <Grid item>
-              Numer: <strong>{numer}</strong>
+              Numer: <strong>{number}</strong>
             </Grid>
             <Grid item>
-              Typ wymiaru: <strong>{typ}</strong> - ({a}
-              {b && `, ${b}`}
-              {c && `, ${c}`}
-              {d && `, ${d}`}
-              {e && `, ${e}`}
-              {f && `, ${f}`})
+              Typ wymiaru:{' '}
+              <strong>
+                {
+                  dimensionTypes.find(({ value }) => value === dimensionTypeId)
+                    ?.label
+                }
+              </strong>
             </Grid>
+            <Grid item>{buildDimension({ a, b, c, d, e, f })}</Grid>
             <Grid item>
-              Materiał: <strong>{material}</strong>
+              Materiał:{' '}
+              <strong>
+                {materials.find(({ value }) => value === materialId)?.label}
+              </strong>
             </Grid>
             <Grid
               item
@@ -77,7 +88,7 @@ const RecordDetails = ({
                 overflowWrap: 'break-word',
               }}
             >
-              Uwagi: <i>{uwagi}</i>
+              Uwagi: <i>{comments}</i>
             </Grid>
             <Grid item container spacing={3} sx={{ marginTop: 2 }}>
               <Grid item>
@@ -109,13 +120,13 @@ const RecordDetails = ({
           </Grid>
           <Grid item xs={8}>
             <a
-              href={`http://localhost:3000/uploads/${plik}`}
+              href={`http://localhost:3000/uploads/${mainFile}`}
               target='_blank'
               rel='noreferrer'
             >
               <img
                 alt='thumbnail'
-                src={`http://localhost:3000/uploads/${plikThumbnail}`}
+                src={`http://localhost:3000/uploads/${thumbnailFile}`}
                 style={{ width: 600, height: 'auto', borderRadius: '3%' }}
               />
             </a>

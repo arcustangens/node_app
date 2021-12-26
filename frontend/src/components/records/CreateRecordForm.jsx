@@ -15,9 +15,9 @@ const CreateRecordForm = ({
   fetchRecords,
   edit,
   record,
-  kontrahenci,
-  typyWymiaru,
-  materialy,
+  contractors,
+  dimensionTypes,
+  materials,
 }) => {
   const [error, setError] = useState()
   const [numerSuggestionLoading, setNumerSuggestionLoading] = useState(false)
@@ -35,37 +35,28 @@ const CreateRecordForm = ({
     resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
     defaultValues: edit
       ? {
-          ..._.omit(record, ['plik', 'plik_thumbnail', 'typ']),
+          ..._.omit(record, ['mainFile', 'thumbnailFile']),
           a: convertNullToUndef(record.a),
           b: convertNullToUndef(record.b),
           c: convertNullToUndef(record.c),
           d: convertNullToUndef(record.d),
           e: convertNullToUndef(record.e),
           f: convertNullToUndef(record.f),
-          kontrahent: kontrahenci.length
-            ? kontrahenci.find(({ label }) => label === record.kontrahent).value
-            : undefined,
-          typWymiaru: typyWymiaru.length
-            ? typyWymiaru.find(({ label }) => label === record.typ).value
-            : undefined,
-          material: materialy.length
-            ? materialy.find(({ label }) => label === record.material).value
-            : undefined,
         }
       : {
-          kontrahent: 1,
-          typ: 1,
+          contractor: 1,
+          dimensionType: 1,
           material: 1,
         },
   })
 
-  const kontrahent = watch('kontrahent')
-  const numer = watch('numer')
+  const contractor = watch('contractor')
+  const number = watch('number')
 
   const buildRecordBody = (data) => {
     const recordPostFormData = new FormData()
     for (const key in data) {
-      recordPostFormData.append(key, data[key])
+      if (data[key]) recordPostFormData.append(key, data[key])
     }
 
     return recordPostFormData
@@ -75,34 +66,35 @@ const CreateRecordForm = ({
     console.log(data)
     setError(null)
 
-    const { plik, plikThumbnail, ...dataWithoutImages } = data
+    const { mainFile, thumbnailFile, ...dataWithoutImages } = data
     const postBody = buildRecordBody(dataWithoutImages)
-    if (plik) postBody.append('plik', plik[0])
-    if (plikThumbnail) postBody.append('plikThumbnail', plikThumbnail[0])
+    if (mainFile && mainFile[0]) postBody.append('mainFile', mainFile[0])
+    if (thumbnailFile && thumbnailFile[0])
+      postBody.append('thumbnailFile', thumbnailFile[0])
 
     try {
       edit
         ? await axios.put(`/records/${record.id}`, postBody)
         : await axios.post('/records', postBody)
-      fetchRecords()
       handleDialog()
+      fetchRecords()
     } catch (e) {
       setError(e.message)
     }
   }
 
-  const fetchNumerSuggestion = async (idKontrahenta) => {
-    if (!numer) setNumerSuggestionLoading(true)
+  const fetchNumerSuggestion = async (contractorId) => {
+    if (!number) setNumerSuggestionLoading(true)
     const { data } = await axios.get(
-      `/kontrahenci/next?idKontrahenta=${idKontrahenta}`
+      `/contractors/next?contractorId=${contractorId}`
     )
-    setValue('numer', data.numerSuggestion)
-    if (!numer) setNumerSuggestionLoading(false)
+    setValue('number', data.numerSuggestion)
+    if (!number) setNumerSuggestionLoading(false)
   }
 
   useEffect(() => {
-    fetchNumerSuggestion(kontrahent)
-  }, [kontrahent])
+    fetchNumerSuggestion(contractor)
+  }, [contractor])
 
   if (numerSuggestionLoading) {
     return (
@@ -119,13 +111,13 @@ const CreateRecordForm = ({
       </Grid>
     )
   } else if (
-    !kontrahenci?.length ||
-    !typyWymiaru?.length ||
-    !materialy?.length
+    !contractors?.length ||
+    !dimensionTypes?.length ||
+    !materials?.length
   ) {
     return (
       <Alert severity='error'>
-        Najpierw dodaj choć jednego kontrahenta, typ wymiaru i materiał!
+        Najpierw dodaj choć jednego contractora, typ wymiaru i materiał!
       </Alert>
     )
   }
@@ -135,22 +127,22 @@ const CreateRecordForm = ({
       <RecordSelect
         errors={errors}
         control={control}
-        name={'kontrahent'}
-        label={'Kontrahent'}
-        options={kontrahenci}
+        name={'contractor'}
+        label={'Kontraktor'}
+        options={contractors}
       />
       <RecordTextField
         register={register}
         errors={errors}
-        name={'numer'}
+        name={'number'}
         label={'Numer'}
       />
       <RecordSelect
         errors={errors}
         control={control}
-        name={'typWymiaru'}
+        name={'dimensionType'}
         label={'Typ wymiaru'}
-        options={typyWymiaru}
+        options={dimensionTypes}
       />
       <Grid container spacing={1}>
         <Grid item xs={2}>
@@ -205,7 +197,7 @@ const CreateRecordForm = ({
       <RecordTextField
         register={register}
         errors={errors}
-        name={'nazwa'}
+        name={'name'}
         label={'Nazwa'}
       />
       <RecordSelect
@@ -213,12 +205,12 @@ const CreateRecordForm = ({
         control={control}
         name={'material'}
         label={'Materiał'}
-        options={materialy}
+        options={materials}
       />
       <RecordTextField
         register={register}
         errors={errors}
-        name={'uwagi'}
+        name={'comments'}
         label={'Uwagi'}
         multiline
       />
@@ -227,7 +219,7 @@ const CreateRecordForm = ({
           <RecordFileField
             register={register}
             errors={errors}
-            name='plik'
+            name='mainFile'
             label='Plik'
           />
         </Grid>
@@ -235,7 +227,7 @@ const CreateRecordForm = ({
           <RecordFileField
             register={register}
             errors={errors}
-            name='plikThumbnail'
+            name='thumbnailFile'
             label='Thumbnail'
           />
         </Grid>

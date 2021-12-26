@@ -17,51 +17,51 @@ const databaseInit = async (
     })
 
     // Setup database and tables if they don't exist yet
-    // await conn.query('drop database if exists demo;')
-    await dbConnection.query('create database if not exists demo;')
+    // await dbConnection.query('drop database if exists demo;')
+    // await dbConnection.query('create database if not exists demo;')
     await dbConnection.query('use demo;')
-    // await conn.query(`CREATE TABLE IF NOT EXISTS \`kontrahenci\` (
+    // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`contractors\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`kontrahent\` varchar(255) NOT NULL,
-    //   \`akronim\` varchar(255) NOT NULL,
+    //   \`contractor\` varchar(255) NOT NULL,
+    //   \`acronym\` varchar(255) NOT NULL,
     //   PRIMARY KEY (\`id\`)
     // );`)
-    // await conn.query(`CREATE TABLE IF NOT EXISTS \`materialy\` (
+    // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`materials\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
     //   \`material\` varchar(255) NOT NULL,
     //   PRIMARY KEY (\`id\`)
     // );`)
-    // await conn.query(`CREATE TABLE IF NOT EXISTS \`typ_wymiaru\` (
+    // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`dimensionTypes\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`typ\` varchar(255) NOT NULL,
+    //   \`dimensionType\` varchar(255) NOT NULL,
     //   PRIMARY KEY (\`id\`)
     // );`)
-    // await conn.query(`CREATE TABLE IF NOT EXISTS \`records\` (
+    // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`records\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`id_kontrahenta\` INT NOT NULL,
-    //   \`numer\` varchar(255) NOT NULL,
-    //   \`id_typu_wymiaru\` INT NOT NULL,
+    //   \`contractorId\` INT NOT NULL,
+    //   \`number\` varchar(255) NOT NULL,
+    //   \`dimensionTypeId\` INT NOT NULL,
     //   \`a\` FLOAT,
     //   \`b\` FLOAT,
     //   \`c\` FLOAT,
     //   \`d\` FLOAT,
     //   \`e\` FLOAT,
     //   \`f\` FLOAT,
-    //   \`nazwa\` varchar(255) NOT NULL,
-    //   \`id_materialu\` INT NOT NULL,
-    //   \`uwagi\` VARCHAR(255) NOT NULL,
-    //   \`plik\` varchar(255) NOT NULL,
-    //   \`plik_thumbnail\` varchar(255) NOT NULL,
+    //   \`name\` varchar(255) NOT NULL,
+    //   \`materialId\` INT NOT NULL,
+    //   \`comments\` VARCHAR(255) NOT NULL,
+    //   \`mainFile\` varchar(255) NOT NULL,
+    //   \`thumbnailFile\` varchar(255) NOT NULL,
     //   PRIMARY KEY (\`id\`)
     // );`)
-    // await conn.query(
-    //   `ALTER TABLE  \`records\` ADD CONSTRAINT \`records_fk0\` FOREIGN KEY (\`id_kontrahenta\`) REFERENCES \`kontrahenci\`(\`id\`) ;`
+    // await dbConnection.query(
+    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk0\` FOREIGN KEY (\`contractorId\`) REFERENCES \`contractors\`(\`id\`) ;`
     // )
-    // await conn.query(
-    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk1\` FOREIGN KEY (\`id_typu_wymiaru\`) REFERENCES \`typ_wymiaru\`(\`id\`);`
+    // await dbConnection.query(
+    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk1\` FOREIGN KEY (\`dimensionTypeId\`) REFERENCES \`dimensionTypes\`(\`id\`);`
     // )
-    // await conn.query(
-    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk2\` FOREIGN KEY (\`id_materialu\`) REFERENCES \`materialy\`(\`id\`);`
+    // await dbConnection.query(
+    //   `ALTER TABLE \`records\` ADD CONSTRAINT \`records_fk2\` FOREIGN KEY (\`materialId\`) REFERENCES \`materials\`(\`id\`);`
     // )
   } catch (err) {
     // Manage Errors

@@ -4,9 +4,9 @@ import { Alert, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
-import { KontrahentSchema } from '../../validation/KontrahentSchema'
+import { ContractorSchema } from '../../validation/ContractorSchema'
 
-const CreateKontrahentForm = ({ handleDialog, fetchKontrahenci }) => {
+const CreateContractorForm = ({ handleDialog, fetchContractors }) => {
   const [error, setError] = useState()
 
   const {
@@ -14,14 +14,14 @@ const CreateKontrahentForm = ({ handleDialog, fetchKontrahenci }) => {
     register,
     formState: { isSubmitting, errors },
   } = useForm({
-    resolver: yupResolver(KontrahentSchema),
+    resolver: yupResolver(ContractorSchema),
   })
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('/kontrahenci', data)
-      fetchKontrahenci()
+      await axios.post('/contractors', data)
       handleDialog()
+      fetchContractors()
     } catch (e) {
       setError(e.message)
     }
@@ -32,13 +32,13 @@ const CreateKontrahentForm = ({ handleDialog, fetchKontrahenci }) => {
       <RecordTextField
         errors={errors}
         register={register}
-        name={'kontrahent'}
-        label={'Kontrahent'}
+        name={'contractor'}
+        label={'Kontraktor'}
       />
       <RecordTextField
         errors={errors}
         register={register}
-        name={'akronim'}
+        name={'acronym'}
         label={'Akronim'}
       />
       {error && <Alert severity='error'>{error}</Alert>}
@@ -55,4 +55,4 @@ const CreateKontrahentForm = ({ handleDialog, fetchKontrahenci }) => {
   )
 }
 
-export default CreateKontrahentForm
+export default CreateContractorForm

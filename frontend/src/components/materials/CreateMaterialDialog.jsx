@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import CreateMaterialForm from './CreateMaterialForm'
 
-const CreateMaterialDialog = ({ fetchMaterialy }) => {
+const CreateMaterialDialog = ({ fetchMaterials }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -29,7 +29,7 @@ const CreateMaterialDialog = ({ fetchMaterialy }) => {
         <DialogContent>
           <CreateMaterialForm
             handleDialog={handleClose}
-            fetchMaterialy={fetchMaterialy}
+            fetchMaterials={fetchMaterials}
           />
         </DialogContent>
         <DialogActions>

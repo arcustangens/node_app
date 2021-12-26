@@ -4,7 +4,7 @@ export const createMaterial = async (req, res) => {
   try {
     const { material } = req.body
 
-    await dbConnection.query('INSERT INTO materialy value (?, ?)', [
+    await dbConnection.query('INSERT INTO materials value (?, ?)', [
       null,
       material,
     ])
