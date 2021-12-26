@@ -1,51 +1,58 @@
-import { Container, Grid, TextField } from '@mui/material'
+import {
+  Alert,
+  CircularProgress,
+  Container,
+  Grid,
+  TextField,
+} from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateKontrahentDialog from './components/kontrahenci/CreateKontrahentDialog'
 import CreateMaterialDialog from './components/materialy/CreateMaterialDialog'
 import CreateTypWymiaruDialog from './components/wymiary/CreateTypWymiaruDialog'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { DebounceInput } from 'react-debounce-input'
+import { useAxiosGet } from './utils/useFetch'
 
 const App = () => {
-  const [records, setRecords] = useState([])
+  const [kontrahenci, kontrahenciLoading, kontrahenciError, fetchKontrahenci] =
+    useAxiosGet('/kontrahenci')
+  const [typyWymiaru, typyWymiaruLoading, typyWymiaruError, fetchTypyWymiaru] =
+    useAxiosGet('/typ_wymiaru')
+  const [materialy, materialyLoading, materialyError, fetchMaterialy] =
+    useAxiosGet('/materialy')
+  const [records, recordsLoading, recordsError, fetchRecords] =
+    useAxiosGet('/records')
   const [filteredRecords, setFilteredRecords] = useState(records)
   const [searchFilter, setSearchFilter] = useState('')
-
-  const fetchRecords = async () => {
-    const { data } = await axios.get('/records')
-    setRecords(data)
-  }
-
-  const appendRecord = (newRecord) => {
-    setRecords([...records, newRecord])
-  }
-
-  const updateRecord = (updatedRecord) => {
-    setRecords([
-      ...records.filter(({ id }) => id === updatedRecord.id),
-      updatedRecord,
-    ])
-  }
-
-  const removeRecord = (removedRecord) => {
-    setRecords([...records.filter(({ id }) => id !== removedRecord.id)])
-  }
-
-  useEffect(() => {
-    fetchRecords()
-  }, [])
 
   useEffect(() => {
     if (records?.length) {
       setFilteredRecords([
         ...records.filter(({ nazwa }) =>
-          nazwa.includes(searchFilter.toString())
+          nazwa.toLowerCase().includes(searchFilter.toString().toLowerCase())
         ),
       ])
     }
   }, [records, searchFilter])
+
+  const isDataLoading =
+    kontrahenciLoading ||
+    typyWymiaruLoading ||
+    materialyLoading ||
+    recordsLoading
+
+  if (isDataLoading) {
+    return (
+      <CircularProgress
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+        }}
+      />
+    )
+  }
 
   return (
     <Container
@@ -57,18 +64,31 @@ const App = () => {
       <Grid container spacing={2} direction='column'>
         <Grid item container direction='row' spacing={3}>
           <Grid item>
-            <CreateRecordDialog appendRecord={appendRecord} />
+            <CreateRecordDialog
+              fetchRecords={fetchRecords}
+              kontrahenci={kontrahenci}
+              typyWymiaru={typyWymiaru}
+              materialy={materialy}
+            />
           </Grid>
           <Grid item>
-            <CreateKontrahentDialog />
+            <CreateKontrahentDialog fetchKontrahenci={fetchKontrahenci} />
           </Grid>
           <Grid item>
-            <CreateMaterialDialog />
+            <CreateTypWymiaruDialog fetchTypyWymiaru={fetchTypyWymiaru} />
           </Grid>
           <Grid item>
-            <CreateTypWymiaruDialog />
+            <CreateMaterialDialog fetchMaterialy={fetchMaterialy} />
           </Grid>
         </Grid>
+        {[kontrahenciError, typyWymiaruError, materialyError, recordsError].map(
+          (e, i) =>
+            e ? (
+              <Grid item key={i}>
+                <Alert severity='error'>{e}</Alert>
+              </Grid>
+            ) : null
+        )}
         <Grid item>
           <DebounceInput
             element={TextField}
@@ -82,8 +102,10 @@ const App = () => {
         <Grid item>
           <RecordTable
             records={filteredRecords}
-            updateRecord={updateRecord}
-            removeRecord={removeRecord}
+            fetchRecords={fetchRecords}
+            kontrahenci={kontrahenci}
+            typyWymiaru={typyWymiaru}
+            materialy={materialy}
           />
         </Grid>
       </Grid>

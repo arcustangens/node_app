@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import CreateKontrahentForm from './CreateKontrahentForm'
 
-const CreateKontrahentDialog = () => {
+const CreateKontrahentDialog = ({ fetchKontrahenci }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -27,7 +27,10 @@ const CreateKontrahentDialog = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Dodaj kontrahenta</DialogTitle>
         <DialogContent>
-          <CreateKontrahentForm handleDialog={handleClose} />
+          <CreateKontrahentForm
+            handleDialog={handleClose}
+            fetchKontrahenci={fetchKontrahenci}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Wróć</Button>

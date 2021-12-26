@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
 import { MaterialSchema } from '../../validation/MaterialSchema'
 
-const CreateMaterialForm = ({ handleDialog }) => {
+const CreateMaterialForm = ({ handleDialog, fetchMaterialy }) => {
   const [error, setError] = useState()
 
   const {
     handleSubmit,
-    control,
+    register,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(MaterialSchema),
@@ -20,6 +20,7 @@ const CreateMaterialForm = ({ handleDialog }) => {
   const onSubmit = async (data) => {
     try {
       await axios.post('/materialy', data)
+      fetchMaterialy()
       handleDialog()
     } catch (e) {
       setError(e.message)
@@ -30,7 +31,7 @@ const CreateMaterialForm = ({ handleDialog }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <RecordTextField
         errors={errors}
-        control={control}
+        register={register}
         name={'material'}
         label={'Materiał'}
       />

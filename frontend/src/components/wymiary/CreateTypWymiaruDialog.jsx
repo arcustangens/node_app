@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import CreateTypWymiaruForm from './CreateTypWymiaruForm'
 
-const CreateTypWymiaruDialog = () => {
+const CreateTypWymiaruDialog = ({ fetchTypyWymiaru }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -27,7 +27,10 @@ const CreateTypWymiaruDialog = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Dodaj typ wymiaru</DialogTitle>
         <DialogContent>
-          <CreateTypWymiaruForm handleDialog={handleClose} />
+          <CreateTypWymiaruForm
+            handleDialog={handleClose}
+            fetchTypyWymiaru={fetchTypyWymiaru}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Wróć</Button>

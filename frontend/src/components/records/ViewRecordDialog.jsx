@@ -12,82 +12,87 @@ import ArrowBack from '@mui/icons-material/ArrowBack'
 import RecordDetails from './RecordDetails'
 import CreateRecordForm from './CreateRecordForm'
 
-const ViewRecordDialog = forwardRef(({ updateRecord, removeRecord }, ref) => {
-  const [record, setRecord] = useState(null)
-  const [editMode, setEditMode] = useState(false)
+const ViewRecordDialog = forwardRef(
+  ({ fetchRecords, kontrahenci, typyWymiaru, materialy }, ref) => {
+    const [record, setRecord] = useState(null)
+    const [editMode, setEditMode] = useState(false)
 
-  useImperativeHandle(ref, () => ({
-    handleOpen(row) {
-      setRecord(row)
-      setOpen(true)
-    },
-  }))
+    useImperativeHandle(ref, () => ({
+      handleOpen(row) {
+        setRecord(row)
+        setOpen(true)
+      },
+    }))
 
-  const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false)
 
-  const handleClose = () => {
-    setOpen(false)
-    setRecord(null)
-  }
+    const handleClose = () => {
+      setOpen(false)
+      setRecord(null)
+    }
 
-  const handleOpenEdit = () => {
-    setEditMode(true)
-  }
+    const handleOpenEdit = () => {
+      setEditMode(true)
+    }
 
-  const handleCloseEdit = () => {
-    setEditMode(false)
-  }
+    const handleCloseEdit = () => {
+      setEditMode(false)
+    }
 
-  return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={() => {
-          handleClose()
-          handleCloseEdit()
-        }}
-        maxWidth='xl'
-      >
-        {editMode ? (
-          <>
-            <DialogTitle>
-              <Grid container alignItems='center'>
-                <Grid item>
-                  <IconButton
-                    color='primary'
-                    aria-label='upload picture'
-                    component='span'
-                    onClick={handleCloseEdit}
-                  >
-                    <ArrowBack />
-                  </IconButton>
+    return (
+      <div>
+        <Dialog
+          open={open}
+          onClose={() => {
+            handleClose()
+            handleCloseEdit()
+          }}
+          maxWidth='xl'
+        >
+          {editMode ? (
+            <>
+              <DialogTitle>
+                <Grid container alignItems='center'>
+                  <Grid item>
+                    <IconButton
+                      color='primary'
+                      aria-label='upload picture'
+                      component='span'
+                      onClick={handleCloseEdit}
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>Edytuj rekord</Grid>
                 </Grid>
-                <Grid item>Edytuj rekord</Grid>
-              </Grid>
-            </DialogTitle>
-            <DialogContent sx={{ minWidth: 400, minHeight: 300 }}>
-              <CreateRecordForm
-                appendRecord={updateRecord}
-                handleDialog={handleCloseEdit}
-                edit
-                record={record}
-              />
-            </DialogContent>
-          </>
-        ) : (
-          <RecordDetails
-            record={record}
-            handleOpenEdit={handleOpenEdit}
-            handleClose={handleClose}
-            removeRecord={removeRecord}
-          />
-        )}
-        <DialogActions>
-          <Button onClick={handleClose}>Wróć</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  )
-})
+              </DialogTitle>
+              <DialogContent sx={{ minWidth: 400, minHeight: 300 }}>
+                <CreateRecordForm
+                  fetchRecords={fetchRecords}
+                  handleDialog={handleCloseEdit}
+                  edit
+                  record={record}
+                  kontrahenci={kontrahenci}
+                  typyWymiaru={typyWymiaru}
+                  materialy={materialy}
+                />
+              </DialogContent>
+            </>
+          ) : (
+            <RecordDetails
+              record={record}
+              handleOpenEdit={handleOpenEdit}
+              handleClose={handleClose}
+              fetchRecords={fetchRecords}
+            />
+          )}
+          <DialogActions>
+            <Button onClick={handleClose}>Wróć</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
+  }
+)
 
 export default ViewRecordDialog

@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
 import { TypWymiaruSchema } from '../../validation/TypWymiaruSchema'
 
-const CreateTypWymiaruForm = ({ handleDialog }) => {
+const CreateTypWymiaruForm = ({ handleDialog, fetchTypyWymiaru }) => {
   const [error, setError] = useState()
 
   const {
     handleSubmit,
-    control,
+    register,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(TypWymiaruSchema),
@@ -20,6 +20,7 @@ const CreateTypWymiaruForm = ({ handleDialog }) => {
   const onSubmit = async (data) => {
     try {
       await axios.post('/typ_wymiaru', data)
+      fetchTypyWymiaru()
       handleDialog()
     } catch (e) {
       setError(e.message)
@@ -30,7 +31,7 @@ const CreateTypWymiaruForm = ({ handleDialog }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <RecordTextField
         errors={errors}
-        control={control}
+        register={register}
         name={'typWymiaru'}
         label={'Typ wymiaru'}
       />

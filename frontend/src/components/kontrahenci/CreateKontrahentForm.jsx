@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import RecordTextField from '../../utils/form/RecordTextField'
 import { KontrahentSchema } from '../../validation/KontrahentSchema'
 
-const CreateKontrahentForm = ({ handleDialog }) => {
+const CreateKontrahentForm = ({ handleDialog, fetchKontrahenci }) => {
   const [error, setError] = useState()
 
   const {
     handleSubmit,
-    control,
+    register,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(KontrahentSchema),
@@ -20,6 +20,7 @@ const CreateKontrahentForm = ({ handleDialog }) => {
   const onSubmit = async (data) => {
     try {
       await axios.post('/kontrahenci', data)
+      fetchKontrahenci()
       handleDialog()
     } catch (e) {
       setError(e.message)
@@ -30,13 +31,13 @@ const CreateKontrahentForm = ({ handleDialog }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <RecordTextField
         errors={errors}
-        control={control}
+        register={register}
         name={'kontrahent'}
         label={'Kontrahent'}
       />
       <RecordTextField
         errors={errors}
-        control={control}
+        register={register}
         name={'akronim'}
         label={'Akronim'}
       />

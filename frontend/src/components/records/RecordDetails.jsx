@@ -6,7 +6,7 @@ const RecordDetails = ({
   record,
   handleOpenEdit,
   handleClose,
-  removeRecord,
+  fetchRecords,
 }) => {
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteError, setDeleteError] = useState()
@@ -21,7 +21,7 @@ const RecordDetails = ({
 
     try {
       await axios.delete(`/records/${record.id}`)
-      removeRecord(record)
+      fetchRecords()
       handleClose()
     } catch (e) {
       setDeleteError(e?.message)

@@ -29,7 +29,13 @@ function getComparator(order, orderBy) {
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
-const RecordTable = ({ records, updateRecord, removeRecord }) => {
+const RecordTable = ({
+  records,
+  fetchRecords,
+  kontrahenci,
+  typyWymiaru,
+  materialy,
+}) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('nazwa')
   const [page, setPage] = useState(0)
@@ -77,8 +83,10 @@ const RecordTable = ({ records, updateRecord, removeRecord }) => {
     <>
       <ViewRecordDialog
         ref={viewRecordDialogRef}
-        updateRecord={updateRecord}
-        removeRecord={removeRecord}
+        fetchRecords={fetchRecords}
+        kontrahenci={kontrahenci}
+        typyWymiaru={typyWymiaru}
+        materialy={materialy}
       />
       <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>

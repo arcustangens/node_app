@@ -8,7 +8,12 @@ import {
 } from '@mui/material'
 import CreateRecordForm from './CreateRecordForm'
 
-const CreateRecordDialog = ({ appendRecord }) => {
+const CreateRecordDialog = ({
+  fetchRecords,
+  kontrahenci,
+  typyWymiaru,
+  materialy,
+}) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -29,7 +34,10 @@ const CreateRecordDialog = ({ appendRecord }) => {
         <DialogContent sx={{ minWidth: 400, minHeight: 300 }}>
           <CreateRecordForm
             handleDialog={handleClose}
-            appendRecord={appendRecord}
+            fetchRecords={fetchRecords}
+            kontrahenci={kontrahenci}
+            typyWymiaru={typyWymiaru}
+            materialy={materialy}
           />
         </DialogContent>
         <DialogActions>

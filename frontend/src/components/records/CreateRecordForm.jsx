@@ -10,14 +10,17 @@ import RecordTextField from '../../utils/form/RecordTextField'
 import RecordFileField from '../../utils/form/RecordFileField'
 import _ from 'lodash'
 
-const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
+const CreateRecordForm = ({
+  handleDialog,
+  fetchRecords,
+  edit,
+  record,
+  kontrahenci,
+  typyWymiaru,
+  materialy,
+}) => {
   const [error, setError] = useState()
-  const [kontrahenci, setKontrahenci] = useState([])
-  const [kontrahenciLoading, setKontrahenciLoading] = useState(false)
-  const [typyWymiaru, setTypyWymiaru] = useState([])
-  const [typyWymiaruLoading, setTypyWymiaruLoading] = useState(false)
-  const [materialy, setMaterialy] = useState([])
-  const [materialyLoading, setMaterialyLoading] = useState(false)
+  const [numerSuggestionLoading, setNumerSuggestionLoading] = useState(false)
 
   const convertNullToUndef = (x) => (_.isNull(x) ? undefined : x)
 
@@ -25,6 +28,8 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     handleSubmit,
     control,
     register,
+    setValue,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
@@ -54,6 +59,9 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
         },
   })
 
+  const kontrahent = watch('kontrahent')
+  const numer = watch('numer')
+
   const buildRecordBody = (data) => {
     const recordPostFormData = new FormData()
     for (const key in data) {
@@ -73,53 +81,30 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
     if (plikThumbnail) postBody.append('plikThumbnail', plikThumbnail[0])
 
     try {
-      const { data } = edit
-        ? await axios.put(`/form/${record.id}`, postBody)
-        : await axios.post('/form', postBody)
-      appendRecord({
-        ...data,
-        kontrahent: kontrahenci.find((x) => x.value === +data.kontrahent).label,
-        material: materialy.find((x) => x.value === +data.material).label,
-        typ: typyWymiaru.find((x) => x.value === +data.typ).label,
-      })
+      edit
+        ? await axios.put(`/records/${record.id}`, postBody)
+        : await axios.post('/records', postBody)
+      fetchRecords()
       handleDialog()
     } catch (e) {
       setError(e.message)
     }
   }
 
-  const fetchKontrahenci = async () => {
-    setKontrahenciLoading(true)
-    const { data } = await axios.get('/kontrahenci')
-    setKontrahenci(data)
-    setKontrahenciLoading(false)
-  }
-
-  const fetchTypyWymiaru = async () => {
-    setTypyWymiaruLoading(true)
-    const { data } = await axios.get('/typ_wymiaru')
-    setTypyWymiaru(data)
-    setTypyWymiaruLoading(false)
-  }
-
-  const fetchMaterialy = async () => {
-    setMaterialyLoading(true)
-    const { data } = await axios.get('/materialy')
-    setMaterialy(data)
-    setMaterialyLoading(false)
-  }
-
-  const isDataLoading = () => {
-    return kontrahenciLoading || typyWymiaruLoading || materialyLoading
+  const fetchNumerSuggestion = async (idKontrahenta) => {
+    if (!numer) setNumerSuggestionLoading(true)
+    const { data } = await axios.get(
+      `/kontrahenci/next?idKontrahenta=${idKontrahenta}`
+    )
+    setValue('numer', data.numerSuggestion)
+    if (!numer) setNumerSuggestionLoading(false)
   }
 
   useEffect(() => {
-    fetchKontrahenci()
-    fetchTypyWymiaru()
-    fetchMaterialy()
-  }, [])
+    fetchNumerSuggestion(kontrahent)
+  }, [kontrahent])
 
-  if (isDataLoading()) {
+  if (numerSuggestionLoading) {
     return (
       <Grid
         container
@@ -133,7 +118,11 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
         </Grid>
       </Grid>
     )
-  } else if (!kontrahenci.length || !typyWymiaru.length || !materialy.length) {
+  } else if (
+    !kontrahenci?.length ||
+    !typyWymiaru?.length ||
+    !materialy?.length
+  ) {
     return (
       <Alert severity='error'>
         Najpierw dodaj choć jednego kontrahenta, typ wymiaru i materiał!
@@ -151,8 +140,8 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
         options={kontrahenci}
       />
       <RecordTextField
+        register={register}
         errors={errors}
-        control={control}
         name={'numer'}
         label={'Numer'}
       />
@@ -166,56 +155,56 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
       <Grid container spacing={1}>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'a'}
             label={'A'}
           />
         </Grid>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'b'}
             label={'B'}
           />
         </Grid>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'c'}
             label={'C'}
           />
         </Grid>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'d'}
             label={'D'}
           />
         </Grid>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'e'}
             label={'E'}
           />
         </Grid>
         <Grid item xs={2}>
           <RecordTextField
+            register={register}
             errors={errors}
-            control={control}
             name={'f'}
             label={'F'}
           />
         </Grid>
       </Grid>
       <RecordTextField
+        register={register}
         errors={errors}
-        control={control}
         name={'nazwa'}
         label={'Nazwa'}
       />
@@ -227,8 +216,8 @@ const CreateRecordForm = ({ handleDialog, appendRecord, edit, record }) => {
         options={materialy}
       />
       <RecordTextField
+        register={register}
         errors={errors}
-        control={control}
         name={'uwagi'}
         label={'Uwagi'}
         multiline
