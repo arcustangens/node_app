@@ -241,7 +241,7 @@ const CreateRecordForm = ({
         variant='contained'
         color='primary'
       >
-        Dodaj
+        {edit ? 'Zaktualizuj' : 'Dodaj'}
       </Button>
     </form>
   )
