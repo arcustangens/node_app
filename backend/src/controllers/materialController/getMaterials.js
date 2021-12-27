@@ -9,6 +9,8 @@ export const getMaterials = async (req, res) => {
     }))
     res.send(parsedData)
   } catch (err) {
-    res.status(404).send(err)
+    res
+      .status(400)
+      .send({ message: err.text || 'Nie udało się znaleźć materiałów' })
   }
 }

@@ -78,8 +78,8 @@ const CreateRecordForm = ({
         : await axios.post('/records', postBody)
       handleDialog()
       fetchRecords()
-    } catch (e) {
-      setError(e.message)
+    } catch ({ response: { data } }) {
+      setError(data.message ? data.message : data)
     }
   }
 

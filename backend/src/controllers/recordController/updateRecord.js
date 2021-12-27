@@ -63,7 +63,8 @@ export const updateRecord = async (req, res) => {
       res.sendStatus(200)
     }
   } catch (err) {
-    console.log(err)
-    res.status(404).send(err)
+    res
+      .status(400)
+      .send({ message: err.text || 'Nie udało się zaktualizować rekordu' })
   }
 }

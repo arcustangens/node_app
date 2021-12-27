@@ -13,8 +13,8 @@ export const useAxiosGet = (uri) => {
     try {
       const res = await axios.get(uri)
       setData(res?.data)
-    } catch (e) {
-      setError(e?.message)
+    } catch ({ response: { data } }) {
+      setError(data.message ? data.message : data)
     } finally {
       setLoading(false)
     }

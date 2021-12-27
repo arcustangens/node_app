@@ -22,8 +22,8 @@ const CreateContractorForm = ({ handleDialog, fetchContractors }) => {
       await axios.post('/contractors', data)
       handleDialog()
       fetchContractors()
-    } catch (e) {
-      setError(e.message)
+    } catch ({ response: { data } }) {
+      setError(data.message ? data.message : data)
     }
   }
 

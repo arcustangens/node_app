@@ -22,8 +22,8 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterials }) => {
       await axios.post('/materials', data)
       handleDialog()
       fetchMaterials()
-    } catch (e) {
-      setError(e.message)
+    } catch ({ response: { data } }) {
+      setError(data.message ? data.message : data)
     }
   }
 

@@ -27,8 +27,8 @@ const RecordDetails = ({
       await axios.delete(`/records/${record.id}`)
       handleClose()
       fetchRecords()
-    } catch (e) {
-      setDeleteError(e?.message)
+    } catch ({ response: { data } }) {
+      setDeleteError(data.message ? data.message : data)
       setDeleteLoading(false)
     }
   }

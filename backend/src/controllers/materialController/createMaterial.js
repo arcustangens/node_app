@@ -11,6 +11,8 @@ export const createMaterial = async (req, res) => {
 
     res.sendStatus(200)
   } catch (err) {
-    res.status(400).send(err)
+    res
+      .status(400)
+      .send({ message: err.text || 'Nie udało się dodać materiału' })
   }
 }

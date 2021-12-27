@@ -5,6 +5,8 @@ export const getRecords = async (req, res) => {
     const data = await dbConnection.query(`SELECT * FROM records;`)
     res.send(data)
   } catch (err) {
-    res.status(404).send(err)
+    res
+      .status(400)
+      .send({ message: err.text || 'Nie udało się znaleźć rekordów' })
   }
 }

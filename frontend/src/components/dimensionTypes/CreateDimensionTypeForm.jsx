@@ -22,8 +22,8 @@ const CreateTypWymiaruForm = ({ handleDialog, fetchDimensionTypes }) => {
       await axios.post('/dimensionTypes', data)
       handleDialog()
       fetchDimensionTypes()
-    } catch (e) {
-      setError(e.message)
+    } catch ({ response: { data } }) {
+      setError(data.message ? data.message : data)
     }
   }
 

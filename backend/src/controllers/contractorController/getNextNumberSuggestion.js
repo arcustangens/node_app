@@ -20,6 +20,8 @@ export const getNextNumberSuggestion = async (req, res) => {
     const suggestion = `${acronym}${fillNumberString(recordsData?.length + 1)}`
     res.send({ numberSuggestion: suggestion })
   } catch (err) {
-    res.status(404).send(err)
+    res
+      .status(400)
+      .send({ message: err.text || 'Nie udało się znaleźć sugestii' })
   }
 }

@@ -22,24 +22,24 @@ const databaseInit = async (
     await dbConnection.query('use demo;')
     // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`contractors\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`contractor\` varchar(255) NOT NULL,
-    //   \`acronym\` varchar(255) NOT NULL,
+    //   \`contractor\` varchar(255) NOT NULL UNIQUE,
+    //   \`acronym\` varchar(255) NOT NULL UNIQUE,
     //   PRIMARY KEY (\`id\`)
     // );`)
     // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`materials\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`material\` varchar(255) NOT NULL,
+    //   \`material\` varchar(255) NOT NULL UNIQUE,
     //   PRIMARY KEY (\`id\`)
     // );`)
     // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`dimensionTypes\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
-    //   \`dimensionType\` varchar(255) NOT NULL,
+    //   \`dimensionType\` varchar(255) NOT NULL UNIQUE,
     //   PRIMARY KEY (\`id\`)
     // );`)
     // await dbConnection.query(`CREATE TABLE IF NOT EXISTS \`records\` (
     //   \`id\` INT NOT NULL AUTO_INCREMENT,
     //   \`contractorId\` INT NOT NULL,
-    //   \`number\` varchar(255) NOT NULL,
+    //   \`number\` varchar(255) NOT NULL UNIQUE,
     //   \`dimensionTypeId\` INT NOT NULL,
     //   \`a\` FLOAT,
     //   \`b\` FLOAT,
@@ -47,7 +47,7 @@ const databaseInit = async (
     //   \`d\` FLOAT,
     //   \`e\` FLOAT,
     //   \`f\` FLOAT,
-    //   \`name\` varchar(255) NOT NULL,
+    //   \`name\` varchar(255) NOT NULL UNIQUE,
     //   \`materialId\` INT NOT NULL,
     //   \`comments\` VARCHAR(255) NOT NULL,
     //   \`mainFile\` varchar(255) NOT NULL,
