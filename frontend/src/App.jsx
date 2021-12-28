@@ -51,9 +51,15 @@ const App = () => {
   const [maxFFilter, setMaxFFilter] = useState('')
 
   const toggleEdit = () => {
-    edit ? localStorage.setItem('edit', 0) : localStorage.setItem('edit', 1)
-
-    setEdit(!edit)
+    if (edit) {
+      localStorage.setItem('edit', 0)
+      setEdit(false)
+    } else {
+      if (prompt('Podaj hasło', '') === 'SIUUUUUU') {
+        localStorage.setItem('edit', 1)
+        setEdit(true)
+      }
+    }
   }
 
   useEffect(() => {
