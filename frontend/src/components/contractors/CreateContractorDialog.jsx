@@ -7,9 +7,11 @@ import {
   Button,
 } from '@mui/material'
 import CreateContractorForm from './CreateContractorForm'
+import { useEditModeContext } from '../../EditModeContext'
 
 const CreateContractorDialog = ({ fetchContractors }) => {
   const [open, setOpen] = useState(false)
+  const { edit } = useEditModeContext()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -21,7 +23,7 @@ const CreateContractorDialog = ({ fetchContractors }) => {
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
+      <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
         Dodaj kontraktora
       </Button>
       <Dialog open={open} onClose={handleClose}>

@@ -1,4 +1,4 @@
-import { Alert, CircularProgress, Container, Grid } from '@mui/material'
+import { Alert, Button, CircularProgress, Container, Grid } from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateContractorDialog from './components/contractors/CreateContractorDialog'
@@ -8,8 +8,13 @@ import { useEffect, useState } from 'react'
 import { useAxiosGet } from './utils/useFetch'
 import RecordFilters from './components/records/RecordFilters'
 import { filterRecords } from './utils/filterRecords'
+import EditIcon from '@mui/icons-material/Edit'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import { EditModeContext } from './EditModeContext'
+import { readEditModeFromStorage } from './utils/readEditModeFromStorage'
 
 const App = () => {
+  const [edit, setEdit] = useState(readEditModeFromStorage())
   const [contractors, contractorsLoading, contractorsError, fetchContractors] =
     useAxiosGet('/contractors')
   const [
@@ -44,6 +49,12 @@ const App = () => {
 
   const [minFFilter, setMinFFilter] = useState('')
   const [maxFFilter, setMaxFFilter] = useState('')
+
+  const toggleEdit = () => {
+    edit ? localStorage.setItem('edit', 0) : localStorage.setItem('edit', 1)
+
+    setEdit(!edit)
+  }
 
   useEffect(() => {
     if (records?.length) {
@@ -108,85 +119,96 @@ const App = () => {
   }
 
   return (
-    <Container
-      maxWidth='xl'
-      sx={{
-        padding: 2,
-      }}
-    >
-      <Grid container spacing={2} direction='column'>
-        <Grid item container direction='row' spacing={3}>
+    <EditModeContext.Provider value={{ edit }}>
+      <Container
+        maxWidth='xl'
+        sx={{
+          padding: 2,
+        }}
+      >
+        <Grid container spacing={2} direction='column'>
+          <Grid item container direction='row' spacing={3}>
+            <Grid item>
+              <CreateRecordDialog
+                fetchRecords={fetchRecords}
+                contractors={contractors}
+                dimensionTypes={dimensionTypes}
+                materials={materials}
+              />
+            </Grid>
+            <Grid item>
+              <CreateContractorDialog fetchContractors={fetchContractors} />
+            </Grid>
+            <Grid item>
+              <CreateDimensionTypeDialog
+                fetchDimensionTypes={fetchDimensionTypes}
+              />
+            </Grid>
+            <Grid item>
+              <CreateMaterialDialog fetchMaterials={fetchMaterials} />
+            </Grid>
+            <Grid item>
+              <Button
+                variant='outlined'
+                startIcon={edit ? <EditIcon /> : <VisibilityIcon />}
+                onClick={toggleEdit}
+              >
+                {edit ? 'Edycja włączona' : 'Edycja wyłączona'}
+              </Button>
+            </Grid>
+          </Grid>
+          {[
+            contractorsError,
+            dimensionTypesError,
+            materialsError,
+            recordsError,
+          ].map((e, i) =>
+            e ? (
+              <Grid item key={i}>
+                <Alert severity='error'>{e}</Alert>
+              </Grid>
+            ) : null
+          )}
+          <RecordFilters
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            minAFilter={minAFilter}
+            maxAFilter={maxAFilter}
+            setMinAFilter={setMinAFilter}
+            setMaxAFilter={setMaxAFilter}
+            minBFilter={minBFilter}
+            maxBFilter={maxBFilter}
+            setMinBFilter={setMinBFilter}
+            setMaxBFilter={setMaxBFilter}
+            minCFilter={minCFilter}
+            maxCFilter={maxCFilter}
+            setMinCFilter={setMinCFilter}
+            setMaxCFilter={setMaxCFilter}
+            minDFilter={minDFilter}
+            maxDFilter={maxDFilter}
+            setMinDFilter={setMinDFilter}
+            setMaxDFilter={setMaxDFilter}
+            minEFilter={minEFilter}
+            maxEFilter={maxEFilter}
+            setMinEFilter={setMinEFilter}
+            setMaxEFilter={setMaxEFilter}
+            minFFilter={minFFilter}
+            maxFFilter={maxFFilter}
+            setMinFFilter={setMinFFilter}
+            setMaxFFilter={setMaxFFilter}
+          />
           <Grid item>
-            <CreateRecordDialog
+            <RecordTable
+              records={filteredRecords}
               fetchRecords={fetchRecords}
               contractors={contractors}
               dimensionTypes={dimensionTypes}
               materials={materials}
             />
           </Grid>
-          <Grid item>
-            <CreateContractorDialog fetchContractors={fetchContractors} />
-          </Grid>
-          <Grid item>
-            <CreateDimensionTypeDialog
-              fetchDimensionTypes={fetchDimensionTypes}
-            />
-          </Grid>
-          <Grid item>
-            <CreateMaterialDialog fetchMaterials={fetchMaterials} />
-          </Grid>
         </Grid>
-        {[
-          contractorsError,
-          dimensionTypesError,
-          materialsError,
-          recordsError,
-        ].map((e, i) =>
-          e ? (
-            <Grid item key={i}>
-              <Alert severity='error'>{e}</Alert>
-            </Grid>
-          ) : null
-        )}
-        <RecordFilters
-          searchFilter={searchFilter}
-          setSearchFilter={setSearchFilter}
-          minAFilter={minAFilter}
-          maxAFilter={maxAFilter}
-          setMinAFilter={setMinAFilter}
-          setMaxAFilter={setMaxAFilter}
-          minBFilter={minBFilter}
-          maxBFilter={maxBFilter}
-          setMinBFilter={setMinBFilter}
-          setMaxBFilter={setMaxBFilter}
-          minCFilter={minCFilter}
-          maxCFilter={maxCFilter}
-          setMinCFilter={setMinCFilter}
-          setMaxCFilter={setMaxCFilter}
-          minDFilter={minDFilter}
-          maxDFilter={maxDFilter}
-          setMinDFilter={setMinDFilter}
-          setMaxDFilter={setMaxDFilter}
-          minEFilter={minEFilter}
-          maxEFilter={maxEFilter}
-          setMinEFilter={setMinEFilter}
-          setMaxEFilter={setMaxEFilter}
-          minFFilter={minFFilter}
-          maxFFilter={maxFFilter}
-          setMinFFilter={setMinFFilter}
-          setMaxFFilter={setMaxFFilter}
-        />
-        <Grid item>
-          <RecordTable
-            records={filteredRecords}
-            fetchRecords={fetchRecords}
-            contractors={contractors}
-            dimensionTypes={dimensionTypes}
-            materials={materials}
-          />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </EditModeContext.Provider>
   )
 }
 

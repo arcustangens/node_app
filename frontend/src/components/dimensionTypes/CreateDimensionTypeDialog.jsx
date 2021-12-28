@@ -7,9 +7,11 @@ import {
   Button,
 } from '@mui/material'
 import CreateTypWymiaruForm from './CreateDimensionTypeForm'
+import { useEditModeContext } from '../../EditModeContext'
 
 const CreateTypWymiaruDialog = ({ fetchDimensionTypes }) => {
   const [open, setOpen] = useState(false)
+  const { edit } = useEditModeContext()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -21,7 +23,7 @@ const CreateTypWymiaruDialog = ({ fetchDimensionTypes }) => {
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
+      <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
         Dodaj typ wymiaru
       </Button>
       <Dialog open={open} onClose={handleClose}>

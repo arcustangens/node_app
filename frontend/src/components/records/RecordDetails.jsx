@@ -2,6 +2,7 @@ import { Alert, Button, DialogContent, DialogTitle, Grid } from '@mui/material'
 import axios from 'axios'
 import { useState } from 'react'
 import { buildDimension } from '../../utils/buildDimension'
+import { useEditModeContext } from '../../EditModeContext'
 
 const RecordDetails = ({
   record,
@@ -14,6 +15,7 @@ const RecordDetails = ({
 }) => {
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteError, setDeleteError] = useState()
+  const { edit } = useEditModeContext()
 
   if (!record) {
     return <span />
@@ -96,6 +98,7 @@ const RecordDetails = ({
                   color='primary'
                   variant='contained'
                   onClick={handleOpenEdit}
+                  disabled={!edit}
                 >
                   Edytuj rekord
                 </Button>
@@ -104,7 +107,7 @@ const RecordDetails = ({
                 <Button
                   color='error'
                   variant='contained'
-                  disabled={deleteLoading}
+                  disabled={deleteLoading || !edit}
                   onClick={() => {
                     if (
                       window.confirm('Czy na pewno chcesz usunąć ten rekord?')

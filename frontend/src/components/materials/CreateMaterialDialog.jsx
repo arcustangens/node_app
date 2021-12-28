@@ -7,9 +7,11 @@ import {
   Button,
 } from '@mui/material'
 import CreateMaterialForm from './CreateMaterialForm'
+import { useEditModeContext } from '../../EditModeContext'
 
 const CreateMaterialDialog = ({ fetchMaterials }) => {
   const [open, setOpen] = useState(false)
+  const { edit } = useEditModeContext()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -21,7 +23,7 @@ const CreateMaterialDialog = ({ fetchMaterials }) => {
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
+      <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
         Dodaj materiał
       </Button>
       <Dialog open={open} onClose={handleClose}>

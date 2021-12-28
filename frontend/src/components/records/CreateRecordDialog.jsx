@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Dialog,
   DialogActions,
@@ -7,6 +7,7 @@ import {
   Button,
 } from '@mui/material'
 import CreateRecordForm from './CreateRecordForm'
+import { useEditModeContext } from '../../EditModeContext'
 
 const CreateRecordDialog = ({
   fetchRecords,
@@ -15,6 +16,7 @@ const CreateRecordDialog = ({
   materials,
 }) => {
   const [open, setOpen] = useState(false)
+  const { edit } = useEditModeContext()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -26,7 +28,7 @@ const CreateRecordDialog = ({
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
+      <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
         Dodaj rekord
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth='xl'>
