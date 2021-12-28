@@ -20,7 +20,7 @@ const CreateRecordForm = ({
   materials,
 }) => {
   const [error, setError] = useState()
-  const [numerSuggestionLoading, setNumerSuggestionLoading] = useState(false)
+  const [numberSuggestionLoading, setNumberSuggestionLoading] = useState(false)
 
   const convertNullToUndef = (x) => (_.isNull(x) ? undefined : x)
 
@@ -83,20 +83,20 @@ const CreateRecordForm = ({
     }
   }
 
-  const fetchNumerSuggestion = async (contractorId) => {
-    if (!number) setNumerSuggestionLoading(true)
-    const { data } = await axios.get(
-      `/contractors/next?contractorId=${contractorId}`
-    )
-    setValue('number', data.numerSuggestion)
-    if (!number) setNumerSuggestionLoading(false)
+  const fetchNumberSuggestion = async (contractorId) => {
+    if (!number) setNumberSuggestionLoading(true)
+    const {
+      data: { numberSuggestion },
+    } = await axios.get(`/contractors/next?contractorId=${contractorId}`)
+    setValue('number', numberSuggestion)
+    if (!number) setNumberSuggestionLoading(false)
   }
 
   useEffect(() => {
-    fetchNumerSuggestion(contractor)
+    if (contractor) fetchNumberSuggestion(contractor)
   }, [contractor])
 
-  if (numerSuggestionLoading) {
+  if (numberSuggestionLoading) {
     return (
       <Grid
         container
@@ -135,7 +135,7 @@ const CreateRecordForm = ({
         register={register}
         errors={errors}
         name={'number'}
-        label={'Numer'}
+        label={'Number'}
       />
       <RecordSelect
         errors={errors}

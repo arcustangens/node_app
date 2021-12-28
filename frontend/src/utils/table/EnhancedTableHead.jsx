@@ -18,8 +18,8 @@ const headCells = [
     label: 'Contractor',
   },
   {
-    id: 'numer',
-    label: 'Numer',
+    id: 'number',
+    label: 'Number',
   },
   {
     id: 'typ',
@@ -67,10 +67,10 @@ const EnhancedTableHead = ({ order, orderBy, onRequestSort }) => {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map(({ id, numeric, disablePadding, label }) => (
+        {headCells.map(({ id, numberic, disablePadding, label }) => (
           <TableCell
             key={id}
-            align={numeric ? 'right' : 'left'}
+            align={numberic ? 'right' : 'left'}
             padding={disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === id ? order : false}
           >

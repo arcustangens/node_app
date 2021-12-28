@@ -1,7 +1,7 @@
 import { dbConnection } from '../../../database.js'
 
 const fillNumberString = (number) => {
-  return `${'0'.repeat(3 - String(number).length)}${number}`
+  return `${'0'.repeat(4 - String(number).length)}${number}`
 }
 
 export const getNextNumberSuggestion = async (req, res) => {

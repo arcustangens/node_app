@@ -1,19 +1,13 @@
-import {
-  Alert,
-  CircularProgress,
-  Container,
-  Grid,
-  TextField,
-} from '@mui/material'
+import { Alert, CircularProgress, Container, Grid } from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateContractorDialog from './components/contractors/CreateContractorDialog'
 import CreateMaterialDialog from './components/materials/CreateMaterialDialog'
 import CreateDimensionTypeDialog from './components/dimensionTypes/CreateDimensionTypeDialog'
 import { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
 import { useAxiosGet } from './utils/useFetch'
-import NumberRangeFilter from './components/utils/NumberRangeFilter'
+import RecordFilters from './components/records/RecordFilters'
+import { filterRecords } from './utils/filterRecords'
 
 const App = () => {
   const [contractors, contractorsLoading, contractorsError, fetchContractors] =
@@ -53,48 +47,27 @@ const App = () => {
 
   useEffect(() => {
     if (records?.length) {
-      const filterRegex = new RegExp(
-        `.*${String(searchFilter).toLowerCase()}.*`
+      setFilteredRecords(
+        filterRecords(
+          records,
+          searchFilter,
+          contractors,
+          dimensionTypes,
+          materials,
+          minAFilter,
+          maxAFilter,
+          minBFilter,
+          maxBFilter,
+          minCFilter,
+          maxCFilter,
+          minDFilter,
+          maxDFilter,
+          minEFilter,
+          maxEFilter,
+          minFFilter,
+          maxFFilter
+        )
       )
-
-      setFilteredRecords([
-        ...records
-          .filter(
-            ({ contractorId, number, dimensionTypeId, name, materialId }) =>
-              filterRegex.test(
-                contractors
-                  .find(({ value }) => value === contractorId)
-                  ?.label.toLowerCase()
-              ) ||
-              filterRegex.test(number.toLowerCase()) ||
-              filterRegex.test(
-                dimensionTypes
-                  .find(({ value }) => value === dimensionTypeId)
-                  ?.label.toLowerCase()
-              ) ||
-              filterRegex.test(name.toLowerCase()) ||
-              filterRegex.test(
-                materials
-                  .find(({ value }) => value === materialId)
-                  ?.label.toLowerCase()
-              )
-          )
-          .filter(
-            ({ a, b, c, d, e, f }) =>
-              a >= (+minAFilter || Math.max()) &&
-              a <= (+maxAFilter || Math.min()) &&
-              b >= (+minBFilter || Math.max()) &&
-              b <= (+maxBFilter || Math.min()) &&
-              c >= (+minCFilter || Math.max()) &&
-              c <= (+maxCFilter || Math.min()) &&
-              d >= (+minDFilter || Math.max()) &&
-              d <= (+maxDFilter || Math.min()) &&
-              e >= (+minEFilter || Math.max()) &&
-              e <= (+maxEFilter || Math.min()) &&
-              f >= (+minFFilter || Math.max()) &&
-              f <= (+maxFFilter || Math.min())
-          ),
-      ])
     }
   }, [
     records,
@@ -175,72 +148,34 @@ const App = () => {
             </Grid>
           ) : null
         )}
-        <Grid item container direction='row' spacing={3}>
-          <Grid item>
-            <DebounceInput
-              element={TextField}
-              id='record-filter'
-              label='Szukaj'
-              value={searchFilter}
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-              debounceTimeout={400}
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minAFilter}
-              setMinValue={setMinAFilter}
-              maxValue={maxAFilter}
-              setMaxValue={setMaxAFilter}
-              label='A'
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minBFilter}
-              setMinValue={setMinBFilter}
-              maxValue={maxBFilter}
-              setMaxValue={setMaxBFilter}
-              label='B'
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minCFilter}
-              setMinValue={setMinCFilter}
-              maxValue={maxCFilter}
-              setMaxValue={setMaxCFilter}
-              label='C'
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minDFilter}
-              setMinValue={setMinDFilter}
-              maxValue={maxDFilter}
-              setMaxValue={setMaxDFilter}
-              label='D'
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minEFilter}
-              setMinValue={setMinEFilter}
-              maxValue={maxEFilter}
-              setMaxValue={setMaxEFilter}
-              label='E'
-            />
-          </Grid>
-          <Grid item>
-            <NumberRangeFilter
-              minValue={minFFilter}
-              setMinValue={setMinFFilter}
-              maxValue={maxFFilter}
-              setMaxValue={setMaxFFilter}
-              label='F'
-            />
-          </Grid>
-        </Grid>
+        <RecordFilters
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          minAFilter={minAFilter}
+          maxAFilter={maxAFilter}
+          setMinAFilter={setMinAFilter}
+          setMaxAFilter={setMaxAFilter}
+          minBFilter={minBFilter}
+          maxBFilter={maxBFilter}
+          setMinBFilter={setMinBFilter}
+          setMaxBFilter={setMaxBFilter}
+          minCFilter={minCFilter}
+          maxCFilter={maxCFilter}
+          setMinCFilter={setMinCFilter}
+          setMaxCFilter={setMaxCFilter}
+          minDFilter={minDFilter}
+          maxDFilter={maxDFilter}
+          setMinDFilter={setMinDFilter}
+          setMaxDFilter={setMaxDFilter}
+          minEFilter={minEFilter}
+          maxEFilter={maxEFilter}
+          setMinEFilter={setMinEFilter}
+          setMaxEFilter={setMaxEFilter}
+          minFFilter={minFFilter}
+          maxFFilter={maxFFilter}
+          setMinFFilter={setMinFFilter}
+          setMaxFFilter={setMaxFFilter}
+        />
         <Grid item>
           <RecordTable
             records={filteredRecords}

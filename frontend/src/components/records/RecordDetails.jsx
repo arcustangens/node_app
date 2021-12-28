@@ -63,7 +63,7 @@ const RecordDetails = ({
               </strong>
             </Grid>
             <Grid item>
-              Numer: <strong>{number}</strong>
+              Number: <strong>{number}</strong>
             </Grid>
             <Grid item>
               Typ wymiaru:{' '}
