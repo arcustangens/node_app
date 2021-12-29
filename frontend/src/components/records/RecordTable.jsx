@@ -127,7 +127,6 @@ const RecordTable = ({
                           viewRecordDialogRef.current.handleOpen(row)
                         }}
                       >
-                        <TableCell align='left'>{row.name}</TableCell>
                         <TableCell align='left'>
                           {
                             contractors.find(
@@ -136,6 +135,7 @@ const RecordTable = ({
                           }
                         </TableCell>
                         <TableCell align='left'>{row.number}</TableCell>
+                        <TableCell align='left'>{row.name}</TableCell>
                         <TableCell align='left'>
                           {
                             dimensionTypes.find(

@@ -10,16 +10,16 @@ import { visuallyHidden } from '@mui/utils'
 
 const headCells = [
   {
-    id: 'nazwa',
-    label: 'Nazwa',
-  },
-  {
     id: 'contractor',
     label: 'Contractor',
   },
   {
     id: 'number',
     label: 'Number',
+  },
+  {
+    id: 'nazwa',
+    label: 'Nazwa',
   },
   {
     id: 'typ',
