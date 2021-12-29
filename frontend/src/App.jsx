@@ -16,17 +16,17 @@ import { readEditModeFromStorage } from './utils/readEditModeFromStorage'
 const App = () => {
   const [edit, setEdit] = useState(readEditModeFromStorage())
   const [contractors, contractorsLoading, contractorsError, fetchContractors] =
-    useAxiosGet('/contractors')
+    useAxiosGet('/api/contractors')
   const [
     dimensionTypes,
     dimensionTypesLoading,
     dimensionTypesError,
     fetchDimensionTypes,
-  ] = useAxiosGet('/dimensionTypes')
+  ] = useAxiosGet('/api/dimensionTypes')
   const [materials, materialsLoading, materialsError, fetchMaterials] =
-    useAxiosGet('/materials')
+    useAxiosGet('/api/materials')
   const [records, recordsLoading, recordsError, fetchRecords] =
-    useAxiosGet('/records')
+    useAxiosGet('/api/records')
   const [filteredRecords, setFilteredRecords] = useState(records)
 
   //Filters

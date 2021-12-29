@@ -19,7 +19,7 @@ const CreateContractorForm = ({ handleDialog, fetchContractors }) => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('/contractors', data)
+      await axios.post('/api/contractors', data)
       handleDialog()
       fetchContractors()
     } catch ({ response: { data } }) {

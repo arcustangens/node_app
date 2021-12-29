@@ -19,7 +19,7 @@ const CreateTypWymiaruForm = ({ handleDialog, fetchDimensionTypes }) => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('/dimensionTypes', data)
+      await axios.post('/api/dimensionTypes', data)
       handleDialog()
       fetchDimensionTypes()
     } catch ({ response: { data } }) {

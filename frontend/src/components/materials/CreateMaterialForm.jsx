@@ -19,7 +19,7 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterials }) => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('/materials', data)
+      await axios.post('/api/materials', data)
       handleDialog()
       fetchMaterials()
     } catch ({ response: { data } }) {
