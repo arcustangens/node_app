@@ -3,8 +3,8 @@ import mariadb from 'mariadb'
 export let dbConnection
 
 const databaseInit = async (
-  host = 'localhost',
-  port = 3306,
+  host = '127.0.0.1',
+  port = '/run/mysqld/mysqld.sock',
   user = 'root',
   password = 'root'
 ) => {
