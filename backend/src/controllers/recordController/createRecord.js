@@ -27,7 +27,7 @@ export const createRecord = async (req, res) => {
     const parsedComments = String(comments || '')
 
     await dbConnection.query(
-      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id',
+      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         null,
         contractor,

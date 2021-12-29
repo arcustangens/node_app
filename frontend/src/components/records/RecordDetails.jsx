@@ -123,13 +123,13 @@ const RecordDetails = ({
           </Grid>
           <Grid item xs={8}>
             <a
-              href={`http://localhost:3000/uploads/${mainFile}`}
+              href={`http://192.168.1.66:3000/uploads/${mainFile}`}
               target='_blank'
               rel='noreferrer'
             >
               <img
                 alt='thumbnail'
-                src={`http://localhost:3000/uploads/${thumbnailFile}`}
+                src={`http://192.168.1.66:3000/uploads/${thumbnailFile}`}
                 style={{ width: 600, height: 'auto', borderRadius: '3%' }}
               />
             </a>

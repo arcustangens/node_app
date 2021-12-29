@@ -109,17 +109,17 @@ const RecordTable = ({
                   .slice()
                   .sort(getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
+                  .map(row => {
                     return (
                       <TableRow
                         hover
                         tabIndex={-1}
                         key={row.id}
-                        onMouseEnter={(e) => {
+                        onMouseEnter={e => {
                           setHoveredRow(row)
                           handlePopoverOpen(e)
                         }}
-                        onMouseLeave={(e) => {
+                        onMouseLeave={e => {
                           handlePopoverClose(e)
                           setHoveredRow(null)
                         }}
@@ -204,7 +204,7 @@ const RecordTable = ({
         {hoveredRow && hoveredRow?.thumbnailFile ? (
           <img
             alt='thumbnail'
-            src={`http://localhost:3000/uploads/${hoveredRow.thumbnailFile}`}
+            src={`http://192.168.1.66:3000/uploads/${hoveredRow.thumbnailFile}`}
             style={{ width: 400, height: 'auto', padding: 10 }}
           />
         ) : (

@@ -55,7 +55,7 @@ const App = () => {
       localStorage.setItem('edit', 0)
       setEdit(false)
     } else {
-      if (prompt('Podaj hasło', '') === 'SIUUUUUU') {
+      if (prompt('Podaj hasło', '') === 'Wykrojniki89') {
         localStorage.setItem('edit', 1)
         setEdit(true)
       }
