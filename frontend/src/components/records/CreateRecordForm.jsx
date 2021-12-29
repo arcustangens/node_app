@@ -74,8 +74,8 @@ const CreateRecordForm = ({
 
     try {
       edit
-        ? await axios.put(`records/${record.id}`, postBody)
-        : await axios.post('records', postBody)
+        ? await axios.put(`/api/records/${record.id}`, postBody)
+        : await axios.post('/api/records', postBody)
       handleDialog()
       fetchRecords()
     } catch ({ response: { data } }) {
@@ -87,7 +87,7 @@ const CreateRecordForm = ({
     if (!number) setNumberSuggestionLoading(true)
     const {
       data: { numberSuggestion },
-    } = await axios.get(`contractors/next?contractorId=${contractorId}`)
+    } = await axios.get(`/api/contractors/next?contractorId=${contractorId}`)
     setValue('number', numberSuggestion)
     if (!number) setNumberSuggestionLoading(false)
   }

@@ -26,7 +26,7 @@ const RecordDetails = ({
     setDeleteError(null)
 
     try {
-      await axios.delete(`records/${record.id}`)
+      await axios.delete(`/api/records/${record.id}`)
       handleClose()
       fetchRecords()
     } catch ({ response: { data } }) {
@@ -59,13 +59,13 @@ const RecordDetails = ({
         <Grid container justifyContent='space-between' spacing={6}>
           <Grid item container direction='column' xs={4} spacing={1}>
             <Grid item>
-              Contractor:{' '}
+              Kontraktor:{' '}
               <strong>
                 {contractors.find(({ value }) => value === contractorId)?.label}
               </strong>
             </Grid>
             <Grid item>
-              Number: <strong>{number}</strong>
+              Numer: <strong>{number}</strong>
             </Grid>
             <Grid item>
               Typ wymiaru:{' '}
