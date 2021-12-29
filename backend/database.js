@@ -6,7 +6,7 @@ const databaseInit = async (
   host = '127.0.0.1',
   port = '/run/mysqld/mysqld.sock',
   user = 'root',
-  password = 'root'
+  password = 'Root12345!'
 ) => {
   try {
     dbConnection = await mariadb.createConnection({
