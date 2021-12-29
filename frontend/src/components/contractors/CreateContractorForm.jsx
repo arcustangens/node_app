@@ -17,9 +17,9 @@ const CreateContractorForm = ({ handleDialog, fetchContractors }) => {
     resolver: yupResolver(ContractorSchema),
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      await axios.post('/contractors', data)
+      await axios.post('contractors', data)
       handleDialog()
       fetchContractors()
     } catch ({ response: { data } }) {

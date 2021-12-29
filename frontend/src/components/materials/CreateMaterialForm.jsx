@@ -17,9 +17,9 @@ const CreateMaterialForm = ({ handleDialog, fetchMaterials }) => {
     resolver: yupResolver(MaterialSchema),
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      await axios.post('/materials', data)
+      await axios.post('materials', data)
       handleDialog()
       fetchMaterials()
     } catch ({ response: { data } }) {

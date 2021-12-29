@@ -22,7 +22,7 @@ const CreateRecordForm = ({
   const [error, setError] = useState()
   const [numberSuggestionLoading, setNumberSuggestionLoading] = useState(false)
 
-  const convertNullToUndef = (x) => (_.isNull(x) ? undefined : x)
+  const convertNullToUndef = x => (_.isNull(x) ? undefined : x)
 
   const {
     handleSubmit,
@@ -53,7 +53,7 @@ const CreateRecordForm = ({
   const contractor = watch('contractor')
   const number = watch('number')
 
-  const buildRecordBody = (data) => {
+  const buildRecordBody = data => {
     const recordPostFormData = new FormData()
     for (const key in data) {
       if (data[key]) recordPostFormData.append(key, data[key])
@@ -62,7 +62,7 @@ const CreateRecordForm = ({
     return recordPostFormData
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     console.log(data)
     setError(null)
 
@@ -74,8 +74,8 @@ const CreateRecordForm = ({
 
     try {
       edit
-        ? await axios.put(`/records/${record.id}`, postBody)
-        : await axios.post('/records', postBody)
+        ? await axios.put(`records/${record.id}`, postBody)
+        : await axios.post('records', postBody)
       handleDialog()
       fetchRecords()
     } catch ({ response: { data } }) {
@@ -83,11 +83,11 @@ const CreateRecordForm = ({
     }
   }
 
-  const fetchNumberSuggestion = async (contractorId) => {
+  const fetchNumberSuggestion = async contractorId => {
     if (!number) setNumberSuggestionLoading(true)
     const {
       data: { numberSuggestion },
-    } = await axios.get(`/contractors/next?contractorId=${contractorId}`)
+    } = await axios.get(`contractors/next?contractorId=${contractorId}`)
     setValue('number', numberSuggestion)
     if (!number) setNumberSuggestionLoading(false)
   }

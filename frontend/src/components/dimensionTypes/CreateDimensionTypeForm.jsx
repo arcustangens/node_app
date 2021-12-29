@@ -17,9 +17,9 @@ const CreateTypWymiaruForm = ({ handleDialog, fetchDimensionTypes }) => {
     resolver: yupResolver(TypWymiaruSchema),
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      await axios.post('/dimensionTypes', data)
+      await axios.post('dimensionTypes', data)
       handleDialog()
       fetchDimensionTypes()
     } catch ({ response: { data } }) {
