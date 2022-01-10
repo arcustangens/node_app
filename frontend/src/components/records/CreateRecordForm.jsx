@@ -22,38 +22,39 @@ const CreateRecordForm = ({
   const [error, setError] = useState()
   const [numberSuggestionLoading, setNumberSuggestionLoading] = useState(false)
 
-  const convertNullToUndef = x => (_.isNull(x) ? undefined : x)
+  const convertNullToUndef = (x) => (_.isNull(x) ? undefined : x)
+
+  const defaultValues = edit
+    ? {
+        ..._.omit(record, ['mainFile', 'thumbnailFile']),
+        a: convertNullToUndef(record.a),
+        b: convertNullToUndef(record.b),
+        c: convertNullToUndef(record.c),
+        d: convertNullToUndef(record.d),
+        e: convertNullToUndef(record.e),
+        f: convertNullToUndef(record.f),
+      }
+    : {
+        contractorId: 1,
+        dimensionTypeId: 1,
+        materialId: 1,
+      }
 
   const {
     handleSubmit,
-    control,
     register,
     setValue,
     watch,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(edit ? UpdateRecordSchema : RecordSchema),
-    defaultValues: edit
-      ? {
-          ..._.omit(record, ['mainFile', 'thumbnailFile']),
-          a: convertNullToUndef(record.a),
-          b: convertNullToUndef(record.b),
-          c: convertNullToUndef(record.c),
-          d: convertNullToUndef(record.d),
-          e: convertNullToUndef(record.e),
-          f: convertNullToUndef(record.f),
-        }
-      : {
-          contractor: 1,
-          dimensionType: 1,
-          material: 1,
-        },
+    defaultValues,
   })
 
   const contractor = watch('contractor')
   const number = watch('number')
 
-  const buildRecordBody = data => {
+  const buildRecordBody = (data) => {
     const recordPostFormData = new FormData()
     for (const key in data) {
       if (data[key]) recordPostFormData.append(key, data[key])
@@ -62,7 +63,7 @@ const CreateRecordForm = ({
     return recordPostFormData
   }
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     console.log(data)
     setError(null)
 
@@ -83,7 +84,7 @@ const CreateRecordForm = ({
     }
   }
 
-  const fetchNumberSuggestion = async contractorId => {
+  const fetchNumberSuggestion = async (contractorId) => {
     if (!number) setNumberSuggestionLoading(true)
     const {
       data: { numberSuggestion },
@@ -125,11 +126,12 @@ const CreateRecordForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <RecordSelect
+        register={register}
         errors={errors}
-        control={control}
         name={'contractor'}
         label={'Kontraktor'}
         options={contractors}
+        defaultValue={defaultValues['contractorId']}
       />
       <RecordTextField
         register={register}
@@ -138,11 +140,12 @@ const CreateRecordForm = ({
         label={'Number'}
       />
       <RecordSelect
+        register={register}
         errors={errors}
-        control={control}
         name={'dimensionType'}
         label={'Typ wymiaru'}
         options={dimensionTypes}
+        defaultValue={defaultValues['dimensionTypeId']}
       />
       <Grid container spacing={1}>
         <Grid item xs={2}>
@@ -201,11 +204,12 @@ const CreateRecordForm = ({
         label={'Nazwa'}
       />
       <RecordSelect
+        register={register}
         errors={errors}
-        control={control}
         name={'material'}
         label={'Materiał'}
         options={materials}
+        defaultValue={defaultValues['materialId']}
       />
       <RecordTextField
         register={register}

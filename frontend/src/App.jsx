@@ -1,4 +1,11 @@
-import { Alert, Button, CircularProgress, Container, Grid } from '@mui/material'
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material'
 import RecordTable from './components/records/RecordTable'
 import CreateRecordDialog from './components/records/CreateRecordDialog'
 import CreateContractorDialog from './components/contractors/CreateContractorDialog'
@@ -12,6 +19,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { EditModeContext } from './EditModeContext'
 import { readEditModeFromStorage } from './utils/readEditModeFromStorage'
+import packageJson from '../package.json'
 
 const App = () => {
   const [edit, setEdit] = useState(readEditModeFromStorage())
@@ -133,6 +141,11 @@ const App = () => {
         }}
       >
         <Grid container spacing={2} direction='column'>
+          <Grid item>
+            <Typography variant='h5'>
+              Rekord Majster v{packageJson.version}
+            </Typography>
+          </Grid>
           <Grid item container direction='row' spacing={3}>
             <Grid item>
               <CreateRecordDialog
