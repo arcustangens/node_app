@@ -6,33 +6,30 @@ import {
   Select,
   MenuItem,
 } from '@mui/material'
+import { Controller } from 'react-hook-form'
 
-const RecordSelect = ({
-  register,
-  errors,
-  name,
-  label,
-  options,
-  defaultValue,
-}) => {
+const RecordSelect = ({ errors, control, name, label, options }) => {
   return (
-    <FormControl error={!!errors[name]} variant='standard' fullWidth>
-      <InputLabel htmlFor={name}>{label}</InputLabel>
-      <Select
-        {...register(name)}
-        aria-describedby={`${name}-error`}
-        defaultValue={defaultValue}
-      >
-        {options.map(({ value, label }) => (
-          <MenuItem key={value} value={value}>
-            {label}
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText id={`${name}-error`}>
-        {errors[name]?.message}
-      </FormHelperText>
-    </FormControl>
+    <Controller
+      render={({ field }) => (
+        <FormControl error={!!errors[name]} variant='standard' fullWidth>
+          <InputLabel htmlFor={name}>{label}</InputLabel>
+          <Select {...field} aria-describedby={`${name}-error`}>
+            {options.map(({ value, label }) => (
+              <MenuItem key={value} value={value}>
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText id={`${name}-error`}>
+            {errors[name]?.message}
+          </FormHelperText>
+        </FormControl>
+      )}
+      control={control}
+      name={name}
+      defaultValue={options[0].value}
+    />
   )
 }
 
