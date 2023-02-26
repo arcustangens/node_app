@@ -1,10 +1,10 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const createContractor = async (req, res) => {
   try {
     const { contractor, acronym } = req.body
 
-    await dbConnection.query('INSERT INTO contractors value (?, ?, ?)', [
+    await runDBQuery('INSERT INTO contractors value (?, ?, ?);', [
       null,
       contractor,
       acronym,

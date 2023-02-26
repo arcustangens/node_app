@@ -1,8 +1,8 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const getDimensionTypes = async (req, res) => {
   try {
-    const data = await dbConnection.query('SELECT * FROM dimensionTypes;')
+    const data = await runDBQuery('SELECT * FROM dimensionTypes;')
     const parsedData = data.map(({ id, dimensionType }) => ({
       value: id,
       label: dimensionType,

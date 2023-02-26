@@ -1,4 +1,4 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 const fillNumberString = (number) => {
   return `${'0'.repeat(3 - String(number).length)}${number}`
@@ -8,12 +8,12 @@ export const getNextNumberSuggestion = async (req, res) => {
   try {
     const { contractorId } = req.query
 
-    const contractorsData = await dbConnection.query(
+    const contractorsData = await runDBQuery(
       'SELECT acronym FROM contractors WHERE id = (?);',
       contractorId
     )
     const acronym = contractorsData[0]?.acronym
-    const recordsData = await dbConnection.query(
+    const recordsData = await runDBQuery(
       'SELECT number FROM records WHERE contractorId = (?);',
       contractorId
     )

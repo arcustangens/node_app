@@ -210,6 +210,21 @@ const App = () => {
               contractors={contractors}
               dimensionTypes={dimensionTypes}
               materials={materials}
+              filters={{
+                searchFilter,
+                minAFilter,
+                maxAFilter,
+                minBFilter,
+                maxBFilter,
+                minCFilter,
+                maxCFilter,
+                minDFilter,
+                maxDFilter,
+                minEFilter,
+                maxEFilter,
+                minFFilter,
+                maxFFilter,
+              }}
             />
           </Grid>
         </Grid>

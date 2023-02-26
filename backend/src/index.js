@@ -4,8 +4,10 @@ import records from './routes/records.js'
 import contractors from './routes/contractors.js'
 import dimensionTypes from './routes/dimensionTypes.js'
 import materials from './routes/materials.js'
-import databaseInit from '../database.js'
 import path from 'path'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 const __dirname = path.resolve()
@@ -26,7 +28,6 @@ app.get(/^\/((?!(api|uploads)).*)$/, (req, res) => {
 })
 
 const main = async () => {
-  await databaseInit()
   app.listen(3000, () => {
     console.log('listening on 3000')
   })

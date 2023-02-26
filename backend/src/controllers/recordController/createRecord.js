@@ -1,4 +1,4 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const createRecord = async (req, res) => {
   try {
@@ -26,8 +26,8 @@ export const createRecord = async (req, res) => {
     const parsedF = parseFloat(f) || null
     const parsedComments = String(comments || '')
 
-    await dbConnection.query(
-      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    await runDBQuery(
+      'INSERT INTO records value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
       [
         null,
         contractor,

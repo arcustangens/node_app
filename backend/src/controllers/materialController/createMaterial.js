@@ -1,13 +1,10 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const createMaterial = async (req, res) => {
   try {
     const { material } = req.body
 
-    await dbConnection.query('INSERT INTO materials value (?, ?)', [
-      null,
-      material,
-    ])
+    await runDBQuery('INSERT INTO materials value (?, ?);', [null, material])
 
     res.sendStatus(200)
   } catch (err) {

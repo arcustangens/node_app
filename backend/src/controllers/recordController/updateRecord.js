@@ -1,11 +1,11 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const updateRecord = async (req, res) => {
   try {
     const { id } = req.params
 
-    const existingRecord = await dbConnection.query(
-      'SELECT id, mainFile, thumbnailFile FROM records WHERE id = ?',
+    const existingRecord = await runDBQuery(
+      'SELECT id, mainFile, thumbnailFile FROM records WHERE id = ?;',
       id
     )
 
@@ -36,9 +36,9 @@ export const updateRecord = async (req, res) => {
       const parsedF = parseFloat(f) || null
       const parsedComments = String(comments || '')
 
-      await dbConnection.query(
+      await runDBQuery(
         `UPDATE records SET contractorId = ?, number = ?, dimensionTypeId = ?, a = ?, b = ?, c = ?, d = ?,
-        e = ?, f = ?, name = ?, materialId = ?, comments = ?, mainFile = ?, thumbnailFile = ? WHERE id = ?`,
+        e = ?, f = ?, name = ?, materialId = ?, comments = ?, mainFile = ?, thumbnailFile = ? WHERE id = ?;`,
         [
           contractor,
           number,

@@ -1,8 +1,8 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const getMaterials = async (req, res) => {
   try {
-    const data = await dbConnection.query('SELECT * FROM materials;')
+    const data = await runDBQuery('SELECT * FROM materials;')
     const parsedData = data.map(({ id, material }) => ({
       value: id,
       label: material,
