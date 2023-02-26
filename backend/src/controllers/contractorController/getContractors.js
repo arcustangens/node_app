@@ -1,8 +1,8 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const getContractors = async (req, res) => {
   try {
-    const data = await dbConnection.query('SELECT * FROM contractors;')
+    const data = await runDBQuery('SELECT * FROM contractors;')
     const parsedData = data.map(({ id, contractor }) => ({
       value: id,
       label: contractor,

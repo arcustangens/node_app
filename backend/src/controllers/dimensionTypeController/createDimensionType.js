@@ -1,10 +1,10 @@
-import { dbConnection } from '../../../database.js'
+import { runDBQuery } from '../../database.js'
 
 export const createDimensionType = async (req, res) => {
   try {
     const { dimensionType } = req.body
 
-    await dbConnection.query('INSERT INTO dimensionTypes value (?, ?)', [
+    await runDBQuery('INSERT INTO dimensionTypes value (?, ?);', [
       null,
       dimensionType,
     ])

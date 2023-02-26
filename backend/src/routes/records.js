@@ -12,9 +12,14 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/')
   },
   filename: (req, { fieldname, originalname }, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
     const extension = originalname.split('.').pop()
-    cb(null, `${fieldname}-${uniqueSuffix}.${extension}`)
+
+    if (fieldname === 'mainFile') {
+      cb(null, `${req.body.number}.${extension}`)
+    } else {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+      cb(null, `${fieldname}-${uniqueSuffix}.${extension}`)
+    }
   },
 })
 const upload = multer({ storage })

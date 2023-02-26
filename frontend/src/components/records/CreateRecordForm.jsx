@@ -63,7 +63,6 @@ const CreateRecordForm = ({
   }
 
   const onSubmit = async data => {
-    console.log(data)
     setError(null)
 
     const { mainFile, thumbnailFile, ...dataWithoutImages } = data
@@ -129,7 +128,7 @@ const CreateRecordForm = ({
         control={control}
         name={'contractor'}
         label={'Kontraktor'}
-        options={contractors}
+        options={contractors.sort((a, b) => a.label.localeCompare(b.label))}
       />
       <RecordTextField
         register={register}

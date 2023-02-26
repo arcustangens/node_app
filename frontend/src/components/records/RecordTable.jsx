@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ViewRecordDialog from './ViewRecordDialog'
 import {
   Box,
@@ -14,28 +14,16 @@ import {
 } from '@mui/material'
 import EnhancedTableToolbar from '../../utils/table/EnhancedTableToolbar'
 import EnhancedTableHead from '../../utils/table/EnhancedTableHead'
+import { usePrevious } from '../../utils/usePrevious'
+import _ from 'lodash'
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
 const RecordTable = ({
   records,
   fetchRecords,
   contractors,
   dimensionTypes,
   materials,
+  filters,
 }) => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('name')
@@ -43,6 +31,32 @@ const RecordTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(25)
   const [anchorEl, setAnchorEl] = useState(null)
   const [hoveredRow, setHoveredRow] = useState(null)
+  const previousFilters = usePrevious(filters)
+
+  const extractValue = (objectValue, orderKey) => {
+    switch (orderKey) {
+      case 'contractorId':
+        return contractors.find(({ value }) => value === objectValue).label
+      case 'dimensionTypeId':
+        return dimensionTypes.find(({ value }) => value === objectValue).label
+      case 'materialId':
+        return materials.find(({ value }) => value === objectValue).label
+      default:
+        return objectValue
+    }
+  }
+
+  const descendingComparator = (a, b, orderBy) => {
+    const aKey = extractValue(a[orderBy], orderBy)
+    const bKey = extractValue(b[orderBy], orderBy)
+
+    return String(aKey).localeCompare(String(bKey))
+  }
+
+  const getComparator = (order, orderBy) =>
+    order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy)
 
   const viewRecordDialogRef = useRef(null)
 
@@ -72,6 +86,10 @@ const RecordTable = ({
     setRowsPerPage(parseInt(value, 10))
     setPage(0)
   }
+
+  useEffect(() => {
+    if (!_.isEqual(filters, previousFilters)) setPage(0)
+  }, [filters, previousFilters])
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
@@ -109,17 +127,17 @@ const RecordTable = ({
                   .slice()
                   .sort(getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(row => {
+                  .map((row) => {
                     return (
                       <TableRow
                         hover
                         tabIndex={-1}
                         key={row.id}
-                        onMouseEnter={e => {
+                        onMouseEnter={(e) => {
                           setHoveredRow(row)
                           handlePopoverOpen(e)
                         }}
-                        onMouseLeave={e => {
+                        onMouseLeave={(e) => {
                           handlePopoverClose(e)
                           setHoveredRow(null)
                         }}

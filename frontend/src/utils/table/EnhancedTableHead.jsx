@@ -10,7 +10,7 @@ import { visuallyHidden } from '@mui/utils'
 
 const headCells = [
   {
-    id: 'contractor',
+    id: 'contractorId',
     label: 'Contractor',
   },
   {
@@ -18,11 +18,11 @@ const headCells = [
     label: 'Number',
   },
   {
-    id: 'nazwa',
+    id: 'name',
     label: 'Nazwa',
   },
   {
-    id: 'typ',
+    id: 'dimensionTypeId',
     label: 'Typ wymiaru',
   },
   {
@@ -50,11 +50,11 @@ const headCells = [
     label: 'F',
   },
   {
-    id: 'material',
+    id: 'materialId',
     label: 'Materiał',
   },
   {
-    id: 'uwagi',
+    id: 'comments',
     label: 'Uwagi',
   },
 ]
