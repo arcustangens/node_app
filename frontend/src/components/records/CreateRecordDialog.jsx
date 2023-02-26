@@ -29,10 +29,10 @@ const CreateRecordDialog = ({
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
-        Dodaj rekord
+        Dodaj wykrojnik
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth='xl'>
-        <DialogTitle>Dodaj rekord</DialogTitle>
+        <DialogTitle>Dodaj wykrojnik</DialogTitle>
         <DialogContent sx={{ minWidth: 400, minHeight: 300 }}>
           <CreateRecordForm
             handleDialog={handleClose}

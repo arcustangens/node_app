@@ -59,7 +59,7 @@ const RecordDetails = ({
         <Grid container justifyContent='space-between' spacing={6}>
           <Grid item container direction='column' xs={4} spacing={1}>
             <Grid item>
-              Kontraktor:{' '}
+              Klient:{' '}
               <strong>
                 {contractors.find(({ value }) => value === contractorId)?.label}
               </strong>

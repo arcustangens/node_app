@@ -33,7 +33,7 @@ const CreateContractorForm = ({ handleDialog, fetchContractors }) => {
         errors={errors}
         register={register}
         name={'contractor'}
-        label={'Kontraktor'}
+        label={'Klient'}
       />
       <RecordTextField
         errors={errors}

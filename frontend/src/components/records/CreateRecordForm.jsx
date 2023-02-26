@@ -117,7 +117,7 @@ const CreateRecordForm = ({
   ) {
     return (
       <Alert severity='error'>
-        Najpierw dodaj choć jednego contractora, typ wymiaru i materiał!
+        Najpierw dodaj choć jednego klienta, typ wymiaru i materiał!
       </Alert>
     )
   }
@@ -128,14 +128,14 @@ const CreateRecordForm = ({
         errors={errors}
         control={control}
         name={'contractor'}
-        label={'Kontraktor'}
+        label={'Klient'}
         options={contractors}
       />
       <RecordTextField
         register={register}
         errors={errors}
         name={'number'}
-        label={'Number'}
+        label={'Numer wykrojnika'}
       />
       <RecordSelect
         errors={errors}

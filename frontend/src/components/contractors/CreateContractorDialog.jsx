@@ -24,10 +24,10 @@ const CreateContractorDialog = ({ fetchContractors }) => {
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen} disabled={!edit}>
-        Dodaj kontraktora
+        Dodaj klienta
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Dodaj kontraktora</DialogTitle>
+        <DialogTitle>Dodaj klienta</DialogTitle>
         <DialogContent>
           <CreateContractorForm
             handleDialog={handleClose}
