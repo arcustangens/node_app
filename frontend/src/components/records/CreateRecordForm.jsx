@@ -127,13 +127,8 @@ const CreateRecordForm = ({
         errors={errors}
         control={control}
         name={'contractor'}
-<<<<<<< HEAD
         label={'Klient'}
-        options={contractors}
-=======
-        label={'Kontraktor'}
         options={contractors.sort((a, b) => a.label.localeCompare(b.label))}
->>>>>>> 9571a29db83277a9c26b91cc47d432ccb8fca62d
       />
       <RecordTextField
         register={register}

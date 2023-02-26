@@ -10,13 +10,8 @@ import { visuallyHidden } from '@mui/utils'
 
 const headCells = [
   {
-<<<<<<< HEAD
-    id: 'contractor',
-    label: 'Klient',
-=======
     id: 'contractorId',
-    label: 'Contractor',
->>>>>>> 9571a29db83277a9c26b91cc47d432ccb8fca62d
+    label: 'Klient',
   },
   {
     id: 'number',
